@@ -5,21 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Início - Nexus</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
 
     <style>
         :root {
-            --bg: linear-gradient(180deg, #1a0505 0%, #000000 100%);
-            --card: rgba(255, 255, 255, 0.05);
-            --red: #e74c3c;
-            --green: #2ecc71;
-            --gold: #FFD700;
+            --bg: radial-gradient(circle at top, #0d1b2a 0%, #020408 100%);
+            --card-glass: rgba(255, 255, 255, 0.03);
+            --card-border: rgba(255, 255, 255, 0.07);
+            --accent-blue: #0077ff;
+            --accent-glow: rgba(0, 119, 255, 0.3);
+            --green: #00e676;
+            --gold: #ffb300;
+            --diamond: #e0e0e0;
             --telegram: #0088cc;
+            --text-muted: #8492a6;
         }
 
-        /* REMOVENDO O CONTORNO AZUL DE SELEÇÃO E FOCO */
         * { 
             margin: 0; 
             padding: 0; 
@@ -29,115 +32,291 @@
             -webkit-tap-highlight-color: transparent; 
         }
 
-        body { background: var(--bg); color: white; padding-bottom: 110px; min-height: 100vh; overflow-x: hidden; }
-
-        /* MURAL DE AVISO DINÂMICO */
-        #container-aviso {
-            display: none;
-            margin: 10px 20px;
-            padding: 15px;
-            background: rgba(231, 76, 60, 0.15);
-            border: 1px solid rgba(231, 76, 60, 0.3);
-            border-radius: 15px;
-            color: #fff;
-            font-size: 0.85rem;
-            text-align: center;
-            animation: pulse 2s infinite;
+        body { 
+            background: var(--bg); 
+            color: white; 
+            padding-bottom: 120px; 
+            min-height: 100vh; 
+            overflow-x: hidden; 
         }
 
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.4); }
-            70% { box-shadow: 0 0 0 10px rgba(231, 76, 60, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(231, 76, 60, 0); }
+        /* MURAL DE AVISO PREMIUM */
+        #container-aviso {
+            display: none;
+            margin: 15px 20px 5px 20px;
+            padding: 14px 18px;
+            background: rgba(0, 119, 255, 0.1);
+            border: 1px solid rgba(0, 119, 255, 0.25);
+            border-radius: 16px;
+            color: #e0f0ff;
+            font-size: 0.85rem;
+            text-align: center;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 4px 20px rgba(0, 119, 255, 0.05);
         }
 
         /* Top Bar */
-        .top-bar { padding: 25px; display: flex; justify-content: space-between; align-items: center; }
-        .logo-home { font-weight: 700; font-size: 1.2rem; letter-spacing: -1px; }
-        .logo-home span { color: var(--red); }
-        .user-greeting h2 { font-size: 1.1rem; text-transform: capitalize; }
-
-        /* Portfolio Card */
-        .portfolio-card { 
-            margin: 0 20px; background: var(--card); border-radius: 25px; 
-            padding: 25px; border: 1px solid rgba(255,255,255,0.1);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+        .top-bar { 
+            padding: 25px 20px 15px 20px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
         }
-        .portfolio-header { text-align: center; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 15px; }
-        .portfolio-header small { color: #888; text-transform: uppercase; font-size: 0.65rem; letter-spacing: 1px; }
-        .balance-main { font-size: 2.2rem; font-weight: 700; color: #fff; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .logo-home { 
+            font-weight: 700; 
+            font-size: 1.3rem; 
+            letter-spacing: -0.5px; 
+        }
+        .logo-home span { 
+            color: var(--accent-blue); 
+            text-shadow: 0 0 12px var(--accent-glow);
+        }
+        .user-greeting h2 { 
+            font-size: 0.9rem; 
+            color: var(--text-muted); 
+            font-weight: 500;
+            text-transform: capitalize;
+            margin-top: 2px;
+        }
+
+        /* Fintech Digital Wallet Card */
+        .portfolio-card { 
+            margin: 15px 20px; 
+            background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%); 
+            border-radius: 24px; 
+            padding: 25px; 
+            border: 1px solid var(--card-border);
+            backdrop-filter: blur(12px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5), inset 0 1px 1px rgba(255,255,255,0.1);
+            position: relative;
+            overflow: hidden;
+        }
         
-        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px; }
-        .stat-item { background: rgba(0,0,0,0.2); padding: 12px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.03); }
-        .stat-item span { display: block; font-size: 0.65rem; color: #888; text-transform: uppercase; margin-bottom: 5px; }
-        .stat-item strong { font-size: 0.95rem; color: #fff; }
+        .portfolio-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 150px;
+            height: 150px;
+            background: var(--accent-blue);
+            filter: blur(90px);
+            opacity: 0.15;
+            pointer-events: none;
+        }
 
-        /* VIP Badges */
-        .vip-badge { display: inline-flex; align-items: center; gap: 5px; padding: 4px 12px; border-radius: 50px; font-size: 0.65rem; font-weight: 800; text-transform: uppercase; }
-        .vip-bronze { background: #3d1a1a; color: #ff9999; }
-        .vip-ouro { background: linear-gradient(90deg, #ffd700, #b8860b); color: #000; }
-        .vip-diamante { background: linear-gradient(90deg, #e5e4e2, #7f8c8d); color: #000; }
-
-        /* Botões de Ação */
-        .actions-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 20px; }
-        .action-btn { background: var(--card); border-radius: 18px; padding: 18px; text-align: center; color: white; text-decoration: none; border: 1px solid rgba(255,255,255,0.05); }
-        .action-btn i { font-size: 1.6rem; margin-bottom: 10px; display: block; color: var(--red); }
-
-        /* Listas de Investimentos */
-        .plans-stack { padding: 15px 20px; display: flex; flex-direction: column; gap: 15px; }
-        .active-plan-item { background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.03) 100%); border-radius: 22px; padding: 18px; border: 1px solid rgba(255, 255, 255, 0.1); position: relative; overflow: hidden; }
-        .plan-progress-bg { height: 4px; background: rgba(255,255,255,0.05); border-radius: 10px; width: 100%; margin-top: 10px; }
+        .portfolio-header { 
+            text-align: center; 
+            margin-bottom: 22px; 
+            padding-bottom: 18px; 
+            border-bottom: 1px solid rgba(255,255,255,0.06); 
+        }
+        .portfolio-header small { 
+            color: var(--text-muted); 
+            text-transform: uppercase; 
+            font-size: 0.65rem; 
+            letter-spacing: 1.5px; 
+            display: block;
+            margin-top: 12px;
+        }
+        .balance-main { 
+            font-size: 2.3rem; 
+            font-weight: 700; 
+            color: #fff; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 12px; 
+            margin-top: 4px;
+            letter-spacing: -0.5px;
+        }
         
+        /* Stats Premium Grid */
+        .stats-grid { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 12px; 
+        }
+        .stat-item { 
+            background: rgba(0, 0, 0, 0.2); 
+            padding: 14px; 
+            border-radius: 16px; 
+            border: 1px solid rgba(255,255,255,0.02); 
+        }
+        .stat-item span { 
+            display: block; 
+            font-size: 0.65rem; 
+            color: var(--text-muted); 
+            text-transform: uppercase; 
+            margin-bottom: 4px; 
+            letter-spacing: 0.5px;
+        }
+        .stat-item strong { 
+            font-size: 1rem; 
+            color: #fff; 
+            font-weight: 600;
+        }
+
+        /* Neon VIP Badges */
+        .vip-badge { 
+            display: inline-flex; 
+            align-items: center; 
+            gap: 6px; 
+            padding: 5px 14px; 
+            border-radius: 50px; 
+            font-size: 0.65rem; 
+            font-weight: 700; 
+            text-transform: uppercase; 
+            letter-spacing: 0.5px;
+        }
+        .vip-bronze { background: rgba(255, 255, 255, 0.08); color: #fff; border: 1px solid rgba(255,255,255,0.1); }
+        .vip-ouro { background: rgba(255, 179, 0, 0.12); color: var(--gold); border: 1px solid rgba(255, 179, 0, 0.3); box-shadow: 0 0 10px rgba(255, 179, 0, 0.1); }
+        .vip-diamante { background: rgba(224, 224, 224, 0.12); color: var(--diamond); border: 1px solid rgba(224, 224, 224, 0.3); box-shadow: 0 0 10px rgba(224, 224, 224, 0.1); }
+
+        /* Botões de Ação Estilo Fintech App */
+        .actions-grid { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 14px; 
+            padding: 10px 20px 20px 20px; 
+        }
+        .action-btn { 
+            background: linear-gradient(135deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%);
+            border-radius: 18px; 
+            padding: 16px; 
+            text-align: center; 
+            color: white; 
+            text-decoration: none; 
+            border: 1px solid var(--card-border); 
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: background 0.3s, transform 0.2s;
+        }
+        .action-btn:active { transform: scale(0.97); background: rgba(255,255,255,0.08); }
+        .action-btn i { 
+            font-size: 1.2rem; 
+            color: var(--accent-blue); 
+            text-shadow: 0 0 10px var(--accent-glow);
+        }
+
+        /* Listas de Investimentos Ativos */
+        .plans-stack { 
+            padding: 15px 20px; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 12px; 
+        }
+        .active-plan-item { 
+            background: rgba(255, 255, 255, 0.02); 
+            border-radius: 20px; 
+            padding: 18px; 
+            border: 1px solid var(--card-border); 
+            position: relative; 
+            overflow: hidden; 
+        }
+        .plan-progress-bg { 
+            height: 5px; 
+            background: rgba(255,255,255,0.04); 
+            border-radius: 10px; 
+            width: 100%; 
+            margin-top: 14px; 
+        }
         .plan-progress-bar { 
-            height: 100%; background: var(--red); border-radius: 10px; 
-            box-shadow: 0 0 10px var(--red); 
+            height: 100%; 
+            background: linear-gradient(90deg, var(--accent-blue), #00d2ff); 
+            border-radius: 10px; 
+            box-shadow: 0 0 12px var(--accent-blue); 
             transition: width 1s linear;
         }
 
-        /* Telegram Button */
+        /* Telegram Floating Action Button */
         .btn-tg {
-            position: fixed; bottom: 85px; right: 20px; background: var(--telegram);
-            width: 50px; height: 50px; border-radius: 50%; display: flex;
-            align-items: center; justify-content: center; color: white;
-            font-size: 1.5rem; z-index: 999; text-decoration: none;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+            position: fixed; 
+            bottom: 95px; 
+            right: 20px; 
+            background: var(--telegram);
+            width: 54px; 
+            height: 54px; 
+            border-radius: 50%; 
+            display: flex;
+            align-items: center; 
+            justify-content: center; 
+            color: white;
+            font-size: 1.4rem; 
+            z-index: 999; 
+            text-decoration: none;
+            box-shadow: 0 8px 25px rgba(0, 136, 204, 0.4);
+            transition: transform 0.2s;
         }
+        .btn-tg:active { transform: scale(0.9); }
 
-        /* Social Pop */
-        .social-pop { position: fixed; bottom: 85px; left: 20px; right: 80px; background: white; color: #333; padding: 12px 15px; border-radius: 15px; display: flex; align-items: center; gap: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); z-index: 9998; transform: translateX(-150%); transition: 0.5s ease-in-out; }
+        /* Social Notification Card Pop */
+        .social-pop { 
+            position: fixed; 
+            bottom: 95px; 
+            left: 20px; 
+            right: 85px; 
+            background: rgba(10, 15, 26, 0.95); 
+            color: #fff; 
+            padding: 14px 18px; 
+            border-radius: 18px; 
+            display: flex; 
+            align-items: center; 
+            gap: 12px; 
+            box-shadow: 0 12px 35px rgba(0,0,0,0.6); 
+            border: 1px solid rgba(255,255,255,0.08);
+            z-index: 9998; 
+            backdrop-filter: blur(10px);
+            transform: translateX(-160%); 
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+        }
         .social-pop.show { transform: translateX(0); }
 
-        /* Nav Bottom COM EFEITO VIDRO VERMELHO NO ATIVO */
+        /* Floating Navigation Pill-Bar (Estilo iOS Premium) */
         .nav-bottom { 
             position: fixed; 
-            bottom: 0; 
-            left: 0; 
-            width: 100%; 
-            background: rgba(0, 0, 0, 0.9); 
+            bottom: 20px; 
+            left: 20px; 
+            right: 20px;
+            background: rgba(10, 15, 30, 0.75); 
             display: flex; 
             justify-content: space-around; 
-            padding: 12px 0; 
-            border-top: 1px solid rgba(255,255,255,0.1); 
-            backdrop-filter: blur(10px);
+            padding: 10px 8px; 
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.7);
+            z-index: 9999;
         }
         .nav-item { 
-            color: #555; 
+            color: #617085; 
             text-align: center; 
             text-decoration: none; 
             font-size: 0.7rem; 
-            padding: 8px 12px;
-            border-radius: 15px;
-            transition: 0.3s;
+            font-weight: 500;
+            padding: 10px 14px;
+            border-radius: 18px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            flex: 1;
         }
-        .nav-item i { display: block; font-size: 1.3rem; margin-bottom: 5px; }
+        .nav-item i { display: block; font-size: 1.2rem; transition: transform 0.2s; }
+        .nav-item:active i { transform: scale(0.85); }
 
         .nav-item.active { 
             color: #fff; 
-            background: rgba(231, 76, 60, 0.2); 
-            border: 1px solid rgba(231, 76, 60, 0.4);
-            box-shadow: 0 0 15px rgba(231, 76, 60, 0.2);
+            background: rgba(0, 119, 255, 0.15); 
+            border: 1px solid rgba(0, 119, 255, 0.3);
+            box-shadow: 0 0 20px rgba(0, 119, 255, 0.15);
         }
-        .nav-item.active i { color: var(--red); }
+        .nav-item.active i { color: var(--accent-blue); }
     </style>
 </head>
 <body>
@@ -145,21 +324,21 @@
     <a href="https://t.me/+Z6pv35vKSuA4MDhh" target="_blank" class="btn-tg"><i class="fab fa-telegram-plane"></i></a>
 
     <div id="social-pop" class="social-pop">
-        <i class="fas fa-check-circle" style="color: #2ecc71;"></i>
-        <p id="social-content" style="font-size: 0.75rem;"></p>
+        <i class="fas fa-check-circle" style="color: var(--green); font-size: 1.1rem;"></i>
+        <p id="social-content" style="font-size: 0.8rem; line-height: 1.3; color: #e2e8f0;"></p>
     </div>
 
     <div id="container-aviso" class="animate__animated animate__fadeInDown">
-        <i class="fas fa-bullhorn" style="margin-right: 8px; color: var(--red);"></i>
+        <i class="fas fa-bullhorn" style="margin-right: 8px; color: var(--accent-blue);"></i>
         <span id="texto-aviso"></span>
     </div>
 
     <div class="top-bar">
-        <div class="user-greeting">
+        <div>
             <div class="logo-home"><span>Nex</span>us</div>
             <h2 id="home-nome">Carregando...</h2>
         </div>
-        <a href="perfil.html" style="color:white; font-size: 1.5rem;"><i class="fas fa-user-circle"></i></a>
+        <a href="perfil.html" style="color: var(--text-muted); font-size: 1.6rem; transition: color 0.2s;"><i class="fas fa-user-circle"></i></a>
     </div>
 
     <div class="portfolio-card">
@@ -167,10 +346,10 @@
             <div id="vip-tag" class="vip-badge vip-bronze">
                 <i class="fas fa-crown"></i> <span id="vip-nome">VIP Bronze</span>
             </div>
-            <br><small>Saldo Total Conta</small>
+            <small>Saldo Total Conta</small>
             <div class="balance-main">
                 <span id="home-saldo">R$ 0,00</span>
-                <i class="fas fa-eye" id="toggle-balance" style="font-size: 1.2rem; color: rgba(255,255,255,0.2); cursor: pointer;"></i>
+                <i class="fas fa-eye" id="toggle-balance" style="font-size: 1.1rem; color: rgba(255,255,255,0.3); cursor: pointer; padding: 4px;"></i>
             </div>
         </div>
         <div class="stats-grid">
@@ -182,11 +361,11 @@
     </div>
 
     <div class="actions-grid">
-        <a href="deposito.html" class="action-btn"><i class="fas fa-wallet"></i>Depositar</a>
-        <a href="saque.html" class="action-btn"><i class="fas fa-hand-holding-usd"></i>Sacar</a>
+        <a href="deposito.html" class="action-btn"><i class="fas fa-wallet"></i><span>Depositar</span></a>
+        <a href="saque.html" class="action-btn"><i class="fas fa-hand-holding-usd"></i><span>Sacar</span></a>
     </div>
 
-    <h3 style="padding: 0 25px; font-size: 0.8rem; color: #666; text-transform: uppercase; font-weight: 700;">Meus Investimentos</h3>
+    <h3 style="padding: 10px 25px 4px 25px; font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; letter-spacing: 1px;">Meus Investimentos</h3>
     <div id="lista-investimentos" class="plans-stack"></div>
 
     <nav class="nav-bottom">
@@ -232,7 +411,7 @@ function showPop() {
     const nome = nomes_pop[Math.floor(Math.random()*nomes_pop.length)];
     const tipo = tipos_pop[Math.floor(Math.random()*tipos_pop.length)];
     const valor = (Math.random() * (450 - 30) + 30).toFixed(2);
-    content.innerHTML = `<b>${nome}</b> ${tipo} <span style="color:#2ecc71; font-weight:700">R$ ${valor}</span>`;
+    content.innerHTML = `<b>${nome}</b> ${tipo} <span style="color:var(--green); font-weight:700">R$ ${valor}</span>`;
     pop.classList.add('show');
     setTimeout(() => pop.classList.remove('show'), 4000);
 }
@@ -270,10 +449,9 @@ function iniciarAnimacaoProgresso() {
     }, 1000);
 }
 
-// --- ESCUTA EM TEMPO REAL (CORAÇÃO DO CÓDIGO) ---
+// --- ESCUTA EM TEMPO REAL ---
 onAuthStateChanged(auth, (user) => {
     if (user) {
-        // Escuta mudanças no documento do usuário (Saldo, Nome, etc)
         onSnapshot(doc(db, "usuarios", user.uid), (docSnap) => {
             if (docSnap.exists()) {
                 const userData = docSnap.data();
@@ -282,7 +460,6 @@ onAuthStateChanged(auth, (user) => {
                     return;
                 }
                 
-                // 1. Atualiza Nome e Saldo Imediatamente
                 document.getElementById('home-nome').innerText = `Olá, ${userData.nome || "Investidor"}`;
                 
                 const saldoPrincipal = Number(userData.saldo) || 0;
@@ -300,20 +477,16 @@ onAuthStateChanged(auth, (user) => {
 
                 atualizarElementosSaldo();
 
-                // Toggle de visibilidade
                 document.getElementById('toggle-balance').onclick = () => {
                     saldoVisivel = !saldoVisivel;
                     localStorage.setItem('saldoVisivel', saldoVisivel);
                     atualizarElementosSaldo();
-                    // Atualiza também o total investido que é carregado depois
                     carregarInvestimentos(user.uid);
                 };
 
-                // 2. Dispara funções secundárias
                 carregarInvestimentos(user.uid);
                 carregarAviso();
                 
-                // Só processa lucros e boas-vindas uma vez por sessão para não travar a UI
                 if (!window.processamentoInicialRealizado) {
                     window.processamentoInicialRealizado = true;
                     processarLogicaNegocio(user.uid, userData);
@@ -348,12 +521,12 @@ async function carregarInvestimentos(uid) {
                 <div class="active-plan-item animate__animated animate__fadeInUp">
                     <div style="display:flex; justify-content:space-between; align-items:center">
                         <div>
-                            <h4 style="font-size:0.95rem; font-weight:700"><i class="fas fa-layer-group" style="color:var(--red); margin-right:5px;"></i> ${inv.plano}</h4>
-                            <small style="color:var(--green); font-weight:600"><i class="fas fa-arrow-up"></i> + ${formatarMoeda(inv.rendimentoDiario)} / dia</small>
+                            <h4 style="font-size:0.95rem; font-weight:700; color:#fff"><i class="fas fa-layer-group" style="color:var(--accent-blue); margin-right:6px;"></i> ${inv.plano}</h4>
+                            <small style="color:var(--green); font-weight:600; display:inline-flex; align-items:center; gap:3px; margin-top:2px;"><i class="fas fa-arrow-up" style="font-size:0.7rem"></i> + ${formatarMoeda(inv.rendimentoDiario)} / dia</small>
                         </div>
                         <div style="text-align:right">
-                            <strong style="font-size:1rem">${formatarMoeda(inv.valor)}</strong>
-                            <br><small style="color:#888; font-size:0.6rem; text-transform:uppercase">Investido</small>
+                            <strong style="font-size:1rem; color:#fff">${formatarMoeda(inv.valor)}</strong>
+                            <br><small style="color:var(--text-muted); font-size:0.6rem; text-transform:uppercase; letter-spacing:0.5px">Investido</small>
                         </div>
                     </div>
                     <div class="plan-progress-bg">
@@ -366,10 +539,9 @@ async function carregarInvestimentos(uid) {
                 </div>`;
         });
 
-        document.getElementById('lista-investimentos').innerHTML = htmlContent || '<p style="text-align:center; color:#444; font-size:0.85rem; margin-top:20px;">Nenhum investimento ativo.</p>';
+        document.getElementById('lista-investimentos').innerHTML = htmlContent || '<p style="text-align:center; color:var(--text-muted); font-size:0.85rem; margin-top:20px;">Nenhum investimento ativo.</p>';
         document.getElementById('stat-investido').innerText = formatarMoeda(totalInvestido);
         
-        // Atualiza Badge VIP
         const vipTag = document.getElementById('vip-tag');
         const vipNome = document.getElementById('vip-nome');
         if (totalInvestido >= 2000) { vipTag.className = "vip-badge vip-diamante"; vipNome.innerText = "VIP Diamante"; }
@@ -380,21 +552,20 @@ async function carregarInvestimentos(uid) {
 }
 
 async function processarLogicaNegocio(uid, userData) {
-    // 1. Verificar boas vindas
     if (!sessionStorage.getItem('notificacaoBoasVindas')) {
         await Swal.fire({
-            title: `<span style="color: #e74c3c;">Nexus</span> Intelligence`,
-            html: `<p style="color: #aaa; font-size: 0.9rem;">Bem-vindo de volta, <b>${userData.nome}</b>!<br>Seus rendimentos são processados a cada 24h.</p>`,
-            background: '#120303',
+            title: `<span style="color: #0077ff;">Nexus</span> Intelligence`,
+            html: `<p style="color: #cbd5e1; font-size: 0.9rem;">Bem-vindo de volta, <b>${userData.nome}</b>!<br>Seus rendimentos são processados a cada 24h.</p>`,
+            background: '#0a0f1a',
             color: '#fff',
             confirmButtonText: 'ACESSAR PAINEL',
-            confirmButtonColor: '#e74c3c',
-            borderRadius: '25px'
+            confirmButtonColor: '#0077ff',
+            customClass: { popup: 'border: 1px solid rgba(255,255,255,0.08);' },
+            borderRadius: '24px'
         });
         sessionStorage.setItem('notificacaoBoasVindas', 'true');
     }
 
-    // 2. Logica de lucros diários (só roda uma vez ao entrar)
     try {
         const q = query(collection(db, "investimentos"), where("userId", "==", uid), where("status", "==", "ativo"));
         const snap = await getDocs(q);
@@ -425,7 +596,14 @@ async function processarLogicaNegocio(uid, userData) {
             await addDoc(collection(db, "historico"), {
                 userId: uid, valor: ganhosParaCreditar, tipo: 'Rendimento', data: Timestamp.now()
             });
-            Swal.fire({ title: 'Lucros Creditados!', text: `R$ ${ganhosParaCreditar.toFixed(2)} adicionados ao seu saldo.`, icon: 'success' });
+            Swal.fire({ 
+                title: 'Lucros Creditados!', 
+                text: `R$ ${ganhosParaCreditar.toFixed(2)} adicionados ao seu saldo.`, 
+                icon: 'success',
+                background: '#0a0f1a',
+                color: '#fff',
+                confirmButtonColor: '#0077ff'
+            });
         }
         
         if (updates.length > 0) await Promise.all(updates);
