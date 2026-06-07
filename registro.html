@@ -5,18 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Criar Conta - Nexus</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <style>
         :root {
-            --bg: linear-gradient(180deg, #1a0505 0%, #000000 100%);
-            --red: #e74c3c;
+            --bg: radial-gradient(circle at center, #0a1526 0%, #020408 100%);
+            --accent-blue: #0077ff;
+            --accent-glow: rgba(0, 119, 255, 0.25);
             --white: #ffffff;
+            --text-muted: #8492a6;
         }
 
-        /* REMOVENDO O CONTORNO AZUL DE SELEÇÃO E FOCO */
         * { 
             margin: 0; 
             padding: 0; 
@@ -38,65 +39,109 @@
         
         .reg-container { 
             width: 100%; 
-            max-width: 400px; 
-            background: rgba(255,255,255,0.05); 
-            padding: 30px; 
-            border-radius: 25px; 
-            border: 1px solid rgba(255,255,255,0.1); 
-            backdrop-filter: blur(10px); 
+            max-width: 390px; 
+            background: rgba(255, 255, 255, 0.03); 
+            padding: 35px 28px; 
+            border-radius: 28px; 
+            border: 1px solid rgba(255, 255, 255, 0.07); 
+            backdrop-filter: blur(16px); 
             text-align: center; 
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), inset 0 1px 0px rgba(255,255,255,0.05);
         }
         
-        .logo { font-size: 2rem; font-weight: 700; color: var(--white); margin-bottom: 5px; letter-spacing: -1px; }
-        .logo span { color: var(--red); }
-        .subtitle { color: #888; font-size: 0.85rem; margin-bottom: 25px; }
+        .logo { 
+            font-size: 2.2rem; 
+            font-weight: 700; 
+            color: var(--white); 
+            margin-bottom: 4px; 
+            letter-spacing: -1px; 
+        }
+        .logo span { 
+            color: var(--accent-blue); 
+            text-shadow: 0 0 15px var(--accent-glow);
+        }
+        .subtitle { 
+            color: var(--text-muted); 
+            font-size: 0.85rem; 
+            margin-bottom: 30px; 
+            font-weight: 400;
+        }
 
-        .input-group { margin-bottom: 15px; text-align: left; position: relative; }
-        label { display: block; margin-bottom: 5px; font-size: 0.8rem; color: #aaa; padding-left: 5px; transition: 0.3s; }
+        .input-group { 
+            margin-bottom: 18px; 
+            text-align: left; 
+            position: relative; 
+        }
+        label { 
+            display: block; 
+            margin-bottom: 6px; 
+            font-size: 0.75rem; 
+            color: var(--text-muted); 
+            padding-left: 4px; 
+            font-weight: 500;
+            letter-spacing: 0.3px;
+            transition: color 0.3s; 
+        }
         
         input { 
             width: 100%; 
-            padding: 15px; 
-            background: rgba(0,0,0,0.3); 
-            border: 1px solid rgba(255,255,255,0.1); 
-            border-radius: 12px; 
+            padding: 15px 16px; 
+            background: rgba(0, 0, 0, 0.35); 
+            border: 1px solid rgba(255, 255, 255, 0.06); 
+            border-radius: 14px; 
             color: white; 
-            transition: 0.3s; 
-            font-size: 1rem; 
+            transition: all 0.3s ease; 
+            font-size: 0.95rem; 
         }
 
-        /* EFEITO VERMELHO AO CLICAR/FOCAR NO CAMPO */
+        input::placeholder {
+            color: #4a5568;
+        }
+
         input:focus { 
-            border-color: var(--red); 
-            background: rgba(231, 76, 60, 0.05); 
-            box-shadow: 0 0 10px rgba(231, 76, 60, 0.2);
+            border-color: var(--accent-blue); 
+            background: rgba(0, 119, 255, 0.03); 
+            box-shadow: 0 0 14px var(--accent-glow);
         }
 
         input:focus + label, .input-group:focus-within label {
-            color: var(--red);
+            color: var(--accent-blue);
         }
 
         .btn-reg { 
             width: 100%; 
             padding: 16px; 
-            border-radius: 12px; 
+            border-radius: 14px; 
             border: none; 
-            background: var(--red); 
+            background: var(--accent-blue); 
             color: white; 
-            font-weight: bold; 
+            font-weight: 700; 
             cursor: pointer; 
-            margin-top: 10px; 
-            font-size: 1rem; 
-            transition: 0.3s; 
-            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+            margin-top: 12px; 
+            font-size: 0.95rem; 
+            letter-spacing: 0.5px;
+            transition: all 0.3s; 
+            box-shadow: 0 6px 20px rgba(0, 119, 255, 0.3);
         }
         
-        .btn-reg:active { transform: scale(0.98); }
-        .btn-reg:disabled { opacity: 0.6; cursor: not-allowed; }
+        .btn-reg:active { transform: scale(0.98); opacity: 0.9; }
+        .btn-reg:disabled { opacity: 0.5; cursor: not-allowed; box-shadow: none; }
 
-        .footer-link { text-align: center; margin-top: 20px; font-size: 0.85rem; }
-        .footer-link a { color: var(--red); text-decoration: none; font-weight: 600; }
+        .footer-link { 
+            text-align: center; 
+            margin-top: 24px; 
+            font-size: 0.85rem; 
+            color: var(--text-muted);
+        }
+        .footer-link a { 
+            color: var(--accent-blue); 
+            text-decoration: none; 
+            font-weight: 600; 
+            transition: color 0.2s;
+        }
+        .footer-link a:hover {
+            color: #3399ff;
+        }
     </style>
 </head>
 <body>
@@ -134,18 +179,17 @@
 
         const firebaseConfig = {
             apiKey: "AIzaSyDKDFw7khZzM9hIX7xbbrbFQeESiCLnmOw",
-    authDomain: "monety-site-9175f.firebaseapp.com",
-    projectId: "monety-site-9175f",
-    storageBucket: "monety-site-9175f.firebasestorage.app",
-    messagingSenderId: "840821848803",
-    appId: "1:840821848803:web:b99a5528e4bb925518a3d6"
+            authDomain: "monety-site-9175f.firebaseapp.com",
+            projectId: "monety-site-9175f",
+            storageBucket: "monety-site-9175f.firebasestorage.app",
+            messagingSenderId: "840821848803",
+            appId: "1:840821848803:web:b99a5528e4bb925518a3d6"
         };
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        // Captura o link de indicação (Referência)
         const urlParams = new URLSearchParams(window.location.search);
         let indicadoPor = urlParams.get('ref');
         if (indicadoPor) {
@@ -165,9 +209,9 @@
                     icon: 'warning',
                     title: 'Dados Incompletos',
                     text: 'Preencha todos os campos corretamente.',
-                    background: '#1a0505',
+                    background: '#0a0f1a',
                     color: '#fff',
-                    confirmButtonColor: '#e74c3c'
+                    confirmButtonColor: '#0077ff'
                 });
             }
 
@@ -176,12 +220,11 @@
                 title: 'Criando sua conta...',
                 allowOutsideClick: false,
                 didOpen: () => { Swal.showLoading(); },
-                background: '#1a0505',
+                background: '#0a0f1a',
                 color: '#fff'
             });
 
             try {
-                // --- BUSCA VALOR DO BÔNUS CONFIGURADO NO PAINEL MASTER ---
                 let saldoInicial = 0;
                 try {
                     const bonusSnap = await getDoc(doc(db, "configuracoes", "bonus_cadastro"));
@@ -197,30 +240,25 @@
                 let avoId = null;
                 let bisavoId = null;
 
-                // --- LÓGICA DE LINHAGEM (SISTEMA DE 3 NÍVEIS) ---
                 if (paiId) {
                     try {
                         const paiSnap = await getDoc(doc(db, "usuarios", paiId));
                         if (paiSnap.exists()) {
                             const paiData = paiSnap.data();
                             
-                            // Define quem são os níveis acima com base no pai
                             avoId = paiData.indicadoPor || null;
                             bisavoId = paiData.indicadoPorAvo || null;
 
-                            // 1. Atualiza contador do PAI (1º Nível)
                             await updateDoc(doc(db, "usuarios", paiId), {
                                 indicadosCount: increment(1)
                             });
 
-                            // 2. Atualiza contador do AVÔ (2º Nível)
                             if (avoId) {
                                 await updateDoc(doc(db, "usuarios", avoId), {
                                     indicadosL2Count: increment(1)
                                 });
                             }
 
-                            // 3. Atualiza contador do BISAVÔ (3º Nível)
                             if (bisavoId) {
                                 await updateDoc(doc(db, "usuarios", bisavoId), {
                                     indicadosL3Count: increment(1)
@@ -230,13 +268,11 @@
                     } catch (e) { console.error("Erro na linhagem:", e); }
                 }
 
-                // Salva o novo usuário com a árvore completa e SALDO DE BÔNUS
-                // IMPORTANTE: saldoLucro inicia em 0 para garantir a separação
                 await setDoc(doc(db, "usuarios", user.uid), {
                     nome: nome,
                     email: email,
-                    saldo: saldoInicial, // Bônus entra no saldo de investimento
-                    saldoLucro: 0,      // Saldo sacável começa zerado
+                    saldo: saldoInicial, 
+                    saldoLucro: 0,      
                     totalGanhos: 0,
                     totalComissoes: 0,
                     indicadosCount: 0,   
@@ -250,7 +286,6 @@
                     dataCriacao: new Date().toISOString()
                 });
 
-                // --- REGISTRA O BÔNUS NO HISTÓRICO PARA O USUÁRIO VER ---
                 if (saldoInicial > 0) {
                     await addDoc(collection(db, "historico"), {
                         userId: user.uid,
@@ -266,8 +301,8 @@
                 await Swal.fire({
                     icon: 'success',
                     title: 'Conta Criada!',
-                    text: saldoInicial > 0 ? `Você ganhou R$ ${saldoInicial.toFixed(2)} de bônus!` : 'Seja bem-vindo à ByteWay!',
-                    background: '#1a0505',
+                    text: saldoInicial > 0 ? `Você ganhou R$ ${saldoInicial.toFixed(2)} de bônus!` : 'Seja bem-vindo!',
+                    background: '#0a0f1a',
                     color: '#fff',
                     showConfirmButton: false,
                     timer: 2000
@@ -284,8 +319,9 @@
                     icon: 'error',
                     title: 'Erro',
                     text: msg,
-                    background: '#1a0505',
-                    color: '#fff'
+                    background: '#0a0f1a',
+                    color: '#fff',
+                    confirmButtonColor: '#0077ff'
                 });
             }
         });
