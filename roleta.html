@@ -85,13 +85,13 @@
 
         .pointer {
             position: absolute;
-            top: -15px;
+            top: -18px;
             left: 50%;
             transform: translateX(-50%);
             z-index: 10;
             font-size: 2.8rem;
             color: var(--gold);
-            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.6));
         }
 
         /* Elemento SVG da Roleta */
@@ -100,17 +100,17 @@
             height: 100%;
             transform: rotate(0deg);
             transition: transform 5s cubic-bezier(0.25, 1, 0.2, 1);
-            filter: drop-shadow(0 0 20px rgba(0, 82, 255, 0.25));
+            filter: drop-shadow(0 0 20px rgba(0, 82, 255, 0.2));
         }
 
-        .wheel-bg { fill: #0f172a; stroke: var(--card-border); stroke-width: 4; }
-        .slice-even { fill: #060b19; }
-        .slice-odd { fill: #0052ff; }
-        .slice-premium { fill: #00e676; }
+        /* Estilização das Fatias do SVG */
+        .slice-even { fill: #0b1329; stroke: rgba(255,255,255,0.05); stroke-width: 1; }
+        .slice-odd { fill: #0052ff; stroke: rgba(255,255,255,0.05); stroke-width: 1; }
+        .slice-premium { fill: #00e676; stroke: rgba(255,255,255,0.05); stroke-width: 1; }
         
         .prize-text {
             font-weight: 800;
-            font-size: 14px;
+            font-size: 13px;
             fill: #ffffff;
             text-anchor: middle;
             dominant-baseline: middle;
@@ -168,23 +168,44 @@
         <div class="pointer"><i class="fas fa-sort-down"></i></div>
         
         <svg class="wheel-svg" id="wheel" viewBox="0 0 300 300">
-            <circle cx="150" cy="150" r="146" class="wheel-bg" />
+            <defs>
+                <path id="slice-template" d="M 150 150 L 275.57 77.5 A 145 145 0 0 1 275.57 222.5 Z" />
+            </defs>
+
+            <circle cx="150" cy="150" r="147" fill="none" stroke="var(--card-border)" stroke-width="4" />
             
-            <path d="M150,150 L276.4,86.6 A146,146 0 0,1 296,150 Z" class="slice-odd" />
-            <path d="M150,150 L223.2,276.4 A146,146 0 0,1 150,296 Z" class="slice-even" />
-            <path d="M150,150 L96.6,276.4 A146,146 0 0,1 4,150 Z" class="slice-odd" />
-            <path d="M150,150 L23.6,86.6 A146,146 0 0,1 150,4 Z" class="slice-even" />
-            <path d="M150,150 L150,4 A146,146 0 0,1 276.4,86.6 Z" class="slice-premium" />
-            <path d="M150,150 L4,150 A146,146 0 0,1 150,296 Z" class="slice-even" />
+            <g transform="rotate(270 150 150)">
+                <use href="#slice-template" class="slice-premium" />
+                <text x="220" y="150" class="prize-text dark" transform="rotate(0 220 150)">R$ 100</text>
+            </g>
 
-            <text x="225" y="110" class="prize-text" transform="rotate(30, 225, 110)">R$ 10</text>
-            <text x="185" y="215" class="prize-text" transform="rotate(90, 185, 215)">Nada</text>
-            <text x="90" y="215" class="prize-text" transform="rotate(150, 90, 215)">R$ 50</text>
-            <text x="75" y="110" class="prize-text" transform="rotate(210, 75, 110)">R$ 5</text>
-            <text x="150" y="50" class="prize-text dark" transform="rotate(270, 150, 50)">R$ 100</text>
-            <text x="220" y="180" class="prize-text" transform="rotate(330, 220, 180)">R$ 20</text>
+            <g transform="rotate(330 150 150)">
+                <use href="#slice-template" class="slice-odd" />
+                <text x="220" y="150" class="prize-text" transform="rotate(0 220 150)">R$ 10</text>
+            </g>
 
-            <circle cx="150" cy="150" r="18" fill="#0f172a" stroke="#00d2ff" stroke-width="3" />
+            <g transform="rotate(30 150 150)">
+                <use href="#slice-template" class="slice-even" />
+                <text x="220" y="150" class="prize-text" transform="rotate(0 220 150)">Nada</text>
+            </g>
+
+            <g transform="rotate(90 150 150)">
+                <use href="#slice-template" class="slice-odd" />
+                <text x="220" y="150" class="prize-text" transform="rotate(0 220 150)">R$ 20</text>
+            </g>
+
+            <g transform="rotate(150 150 150)">
+                <use href="#slice-template" class="slice-even" />
+                <text x="220" y="150" class="prize-text" transform="rotate(0 220 150)">R$ 50</text>
+            </g>
+
+            <g transform="rotate(210 150 150)">
+                <use href="#slice-template" class="slice-odd" />
+                <text x="220" y="150" class="prize-text" transform="rotate(0 220 150)">R$ 5</text>
+            </g>
+
+            <circle cx="150" cy="150" r="22" fill="#020408" stroke="var(--cyan-neon)" stroke-width="3" />
+            <circle cx="150" cy="150" r="6" fill="var(--blue-primary)" />
         </svg>
     </div>
 
@@ -196,13 +217,13 @@
         <a href="home.html" class="nav-item"><i class="fas fa-home"></i><span>Início</span></a>
         <a href="planos.html" class="nav-item"><i class="fas fa-chart-pie"></i><span>Planos</span></a>
         <a href="indicacao.html" class="nav-item"><i class="fas fa-share-alt"></i><span>Indicar</span></a>
-        <a href="perfil.html" class="nav-item"><i class="fas fa-user-alt"></i><span>Perfil</span></a>
+        <a href="perfil.html" class="nav-item active"><i class="fas fa-user-alt"></i><span>Perfil</span></a>
     </nav>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-        import { getFirestore, doc, onSnapshot, updateDoc, increment, addDoc, collection, Timestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getFirestore, doc, onSnapshot, updateDoc, setDoc, increment, addDoc, collection, Timestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyDKDFw7khZzM9hIX7xbbrbFQeESiCLnmOw",
@@ -222,37 +243,51 @@
         let isSpinning = false;
         let degreesGiroTotal = 0;
 
-        // Lista de prêmios correspondente aos ângulos exatos do SVG
+        // Ângulos mapeados com base no centro de cada rotação do grupo de fatias
         const premios = [
-            { valor: 10,  anguloCentro: 30 },
-            { valor: 0,   anguloCentro: 90 },
-            { valor: 50,  anguloCentro: 150 },
-            { valor: 5,   anguloCentro: 210 },
             { valor: 100, anguloCentro: 270 },
-            { valor: 20,  anguloCentro: 330 }
+            { valor: 10,  anguloCentro: 330 },
+            { valor: 0,   anguloCentro: 30  },
+            { valor: 20,  anguloCentro: 90  },
+            { valor: 50,  anguloCentro: 150 },
+            { valor: 5,   anguloCentro: 210 }
         ];
 
-        // Tabela de probabilidades baseada em amostragem
         function puxarPremio() {
             const r = Math.random() * 100;
-            if (r < 45) return premios[1];  // 45% chance: Nada
-            if (r < 75) return premios[3];  // 30% chance: R$ 5
-            if (r < 90) return premios[0];  // 15% chance: R$ 10
-            if (r < 97) return premios[5];  // 7% chance: R$ 20
-            if (r < 99.5) return premios[2]; // 2.5% chance: R$ 50
-            return premios[4];               // 0.5% chance: R$ 100
+            if (r < 45) return premios[2];  // 45% chance: Nada
+            if (r < 75) return premios[5];  // 30% chance: R$ 5
+            if (r < 90) return premios[1];  // 15% chance: R$ 10
+            if (r < 97) return premios[3];  // 7% chance: R$ 20
+            if (r < 99.5) return premios[4]; // 2.5% chance: R$ 50
+            return premios[0];               // 0.5% chance: R$ 100
         }
 
         const btnSpin = document.getElementById('btn-spin');
         const girosDisplay = document.getElementById('giros-count');
         const wheel = document.getElementById('wheel');
 
-        onAuthStateChanged(auth, (user) => {
+        onAuthStateChanged(auth, async (user) => {
             if (user) {
                 userDocRef = doc(db, "usuarios", user.uid);
-                onSnapshot(userDocRef, (snap) => {
-                    if (snap.exists() && !isSpinning) {
-                        girosAtuais = snap.data().giros || 0;
+                
+                onSnapshot(userDocRef, async (snap) => {
+                    // AUTO-INICIALIZADOR PROTEGIDO: Cria o documento se ele não existir
+                    if (!snap.exists()) {
+                        await setDoc(userDocRef, {
+                            giros: 1,
+                            saldo: 0,
+                            saldoLucro: 0,
+                            totalGanhos: 0,
+                            status: "ativo"
+                        }, { merge: true });
+                        return; 
+                    }
+
+                    if (!isSpinning) {
+                        const data = snap.data();
+                        // Garante que se o campo giros não existir, vire 0 em vez de travar o app
+                        girosAtuais = data.giros !== undefined ? data.giros : 0;
                         girosDisplay.innerText = girosAtuais;
                         
                         if(girosAtuais > 0) {
@@ -277,23 +312,22 @@
             btnSpin.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sorteando...';
 
             try {
-                // Remove o giro do usuário imediatamente no banco antes de rodar a animação
+                // Deduz o giro do banco imediatamente (evita fraudes de duplo clique)
                 await updateDoc(userDocRef, { giros: increment(-1) });
 
                 const sorteado = puxarPremio();
                 
-                // Cálculo matemático perfeito para frear no centro da fatia correspondente ao ponteiro (topo = 270°)
-                const voltasCompletas = 360 * 6; 
+                // Cálculo de rotação baseado no ponteiro fixo no topo (270°)
+                const voltasCompletas = 360 * 5; 
                 const ajusteDestino = (270 - sorteado.anguloCentro + 360) % 360;
                 
                 degreesGiroTotal += voltasCompletas + ajusteDestino - (degreesGiroTotal % 360);
                 wheel.style.transform = `rotate(${degreesGiroTotal}deg)`;
 
-                // Aguarda os 5 segundos da transição CSS terminar
                 setTimeout(async () => {
                     isSpinning = false;
 
-                    // Cria o histórico de auditoria do giro consumido
+                    // Cria histórico do giro usado
                     await addDoc(collection(db, "historico_giros"), {
                         userId: auth.currentUser.uid,
                         quantidade: -1,
@@ -303,13 +337,12 @@
                     });
 
                     if (sorteado.valor > 0) {
-                        // Atualiza as carteiras de saldo financeiro do usuário
+                        // Acrescenta saldo diretamente na carteira de lucros
                         await updateDoc(userDocRef, {
                             saldoLucro: increment(sorteado.valor),
                             totalGanhos: increment(sorteado.valor)
                         });
 
-                        // Adiciona no extrato financeiro padrão do painel principal
                         await addDoc(collection(db, "historico"), {
                             userId: auth.currentUser.uid,
                             valor: sorteado.valor,
@@ -319,26 +352,23 @@
 
                         Swal.fire({
                             title: 'Parabéns!',
-                            html: `Você ganhou <span style="color:var(--green-success);font-weight:700">R$ ${sorteado.valor},00</span> adicionados ao seu saldo de saque!`,
+                            html: `Você ganhou <span style="color:var(--green-success);font-weight:700">R$ ${sorteado.valor},00</span>!`,
                             icon: 'success',
                             background: '#060b19',
                             color: '#fff',
-                            confirmButtonColor: '#0052ff',
-                            borderRadius: '20px'
+                            confirmButtonColor: '#0052ff'
                         });
                     } else {
                         Swal.fire({
                             title: 'Quase lá!',
-                            text: 'Não foi dessa vez! Ative mais planos ou convide amigos para ganhar novos giros.',
+                            text: 'Não foi dessa vez! Indique mais amigos para conseguir novos giros.',
                             icon: 'info',
                             background: '#060b19',
                             color: '#fff',
-                            confirmButtonColor: '#0052ff',
-                            borderRadius: '20px'
+                            confirmButtonColor: '#0052ff'
                         });
                     }
                     
-                    // Sincronização e verificação de giros remanescentes
                     girosDisplay.innerText = girosAtuais - 1;
                     if ((girosAtuais - 1) > 0) {
                         btnSpin.disabled = false;
