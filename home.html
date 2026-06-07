@@ -5,23 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Início - Nexus</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
 
     <style>
         :root {
-            --bg: radial-gradient(circle at top, #0d1b2a 0%, #020408 100%);
-            --card-glass: rgba(255, 255, 255, 0.03);
-            --card-border: rgba(255, 255, 255, 0.07);
-            --accent-blue: #0077ff;
-            --accent-glow: rgba(0, 119, 255, 0.3);
-            --green: #00e676;
-            --gold: #ffb300;
-            --diamond: #e0e0e0;
+            --bg: linear-gradient(180deg, #1a0505 0%, #000000 100%);
+            --card: rgba(255, 255, 255, 0.05);
+            --red: #e74c3c;
+            --green: #2ecc71;
+            --gold: #FFD700;
             --telegram: #0088cc;
-            --text-muted: #8492a6;
-            --fire-gradient: linear-gradient(0deg, #ff4500, #ffaa00);
         }
 
         * { 
@@ -33,124 +28,129 @@
             -webkit-tap-highlight-color: transparent; 
         }
 
-        body { 
-            background: var(--bg); 
-            color: white; 
-            padding-bottom: 140px; 
-            min-height: 100vh; 
-            overflow-x: hidden; 
-        }
+        body { background: var(--bg); color: white; padding-bottom: 110px; min-height: 100vh; overflow-x: hidden; }
 
         #container-aviso {
             display: none;
-            margin: 15px 20px 5px 20px;
-            padding: 14px 18px;
-            background: rgba(0, 119, 255, 0.1);
-            border: 1px solid rgba(0, 119, 255, 0.25);
-            border-radius: 16px;
-            color: #e0f0ff;
+            margin: 10px 20px;
+            padding: 15px;
+            background: rgba(231, 76, 60, 0.15);
+            border: 1px solid rgba(231, 76, 60, 0.3);
+            border-radius: 15px;
+            color: #fff;
             font-size: 0.85rem;
             text-align: center;
-            backdrop-filter: blur(8px);
+            animation: pulse 2s infinite;
         }
 
-        .top-bar { 
-            padding: 25px 20px 15px 20px; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(231, 76, 60, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(231, 76, 60, 0); }
         }
-        .logo-home { font-weight: 700; font-size: 1.3rem; letter-spacing: -0.5px; }
-        .logo-home span { color: var(--accent-blue); text-shadow: 0 0 12px var(--accent-glow); }
-        .user-greeting h2 { font-size: 0.9rem; color: var(--text-muted); font-weight: 500; text-transform: capitalize; margin-top: 2px; }
+
+        .top-bar { padding: 25px; display: flex; justify-content: space-between; align-items: center; }
+        .logo-home { font-weight: 700; font-size: 1.2rem; letter-spacing: -1px; }
+        .logo-home span { color: var(--red); }
+        .user-greeting h2 { font-size: 1.1rem; text-transform: capitalize; }
 
         .portfolio-card { 
-            margin: 15px 20px; 
-            background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%); 
-            border-radius: 24px; 
-            padding: 25px; 
-            border: 1px solid var(--card-border);
-            backdrop-filter: blur(12px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-            position: relative;
+            margin: 0 20px; background: var(--card); border-radius: 25px; 
+            padding: 25px; border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
         }
-
-        .portfolio-header { text-align: center; margin-bottom: 22px; padding-bottom: 18px; border-bottom: 1px solid rgba(255,255,255,0.06); }
-        .portfolio-header small { color: var(--text-muted); text-transform: uppercase; font-size: 0.65rem; letter-spacing: 1.5px; display: block; margin-top: 12px; }
-        .balance-main { font-size: 2.3rem; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 4px; }
+        .portfolio-header { text-align: center; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 15px; }
+        .portfolio-header small { color: #888; text-transform: uppercase; font-size: 0.65rem; letter-spacing: 1px; }
+        .balance-main { font-size: 2.2rem; font-weight: 700; color: #fff; display: flex; align-items: center; justify-content: center; gap: 10px; }
         
-        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        .stat-item { background: rgba(0, 0, 0, 0.2); padding: 14px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.02); }
-        .stat-item span { display: block; font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; margin-bottom: 4px; }
-        .stat-item strong { font-size: 1rem; color: #fff; font-weight: 600; }
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px; }
+        .stat-item { background: rgba(0,0,0,0.2); padding: 12px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.03); }
+        .stat-item span { display: block; font-size: 0.65rem; color: #888; text-transform: uppercase; margin-bottom: 5px; }
+        .stat-item strong { font-size: 0.95rem; color: #fff; }
 
-        .vip-badge { display: inline-flex; align-items: center; gap: 6px; padding: 5px 14px; border-radius: 50px; font-size: 0.65rem; font-weight: 700; text-transform: uppercase; }
-        .vip-bronze { background: rgba(255, 255, 255, 0.08); color: #fff; border: 1px solid rgba(255,255,255,0.1); }
-        .vip-ouro { background: rgba(255, 179, 0, 0.12); color: var(--gold); border: 1px solid rgba(255, 179, 0, 0.3); }
-        .vip-diamante { background: rgba(224, 224, 224, 0.12); color: var(--diamond); border: 1px solid rgba(224, 224, 224, 0.3); }
+        .vip-badge { display: inline-flex; align-items: center; gap: 5px; padding: 4px 12px; border-radius: 50px; font-size: 0.65rem; font-weight: 800; text-transform: uppercase; }
+        .vip-bronze { background: #3d1a1a; color: #ff9999; }
+        .vip-ouro { background: linear-gradient(90deg, #ffd700, #b8860b); color: #000; }
+        .vip-diamante { background: linear-gradient(90deg, #e5e4e2, #7f8c8d); color: #000; }
 
-        .actions-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; padding: 10px 20px 20px 20px; }
-        .action-btn { 
-            background: linear-gradient(135deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%);
-            border-radius: 18px; padding: 16px; text-align: center; color: white; text-decoration: none; border: 1px solid var(--card-border); 
-            font-weight: 600; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; gap: 10px;
+        .actions-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 20px; }
+        .action-btn { background: var(--card); border-radius: 18px; padding: 18px; text-align: center; color: white; text-decoration: none; border: 1px solid rgba(255,255,255,0.05); }
+        .action-btn i { font-size: 1.6rem; margin-bottom: 10px; display: block; color: var(--red); }
+
+        .plans-stack { padding: 15px 20px; display: flex; flex-direction: column; gap: 15px; }
+        .active-plan-item { background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.03) 100%); border-radius: 22px; padding: 18px; border: 1px solid rgba(255, 255, 255, 0.1); position: relative; overflow: hidden; }
+        .plan-progress-bg { height: 4px; background: rgba(255,255,255,0.05); border-radius: 10px; width: 100%; margin-top: 10px; }
+        
+        .plan-progress-bar { 
+            height: 100%; background: var(--red); border-radius: 10px; 
+            box-shadow: 0 0 10px var(--red); 
+            transition: width 1s linear;
         }
-        .action-btn i { color: var(--accent-blue); }
 
-        /* SISTEMA DE BÔNUS SEQUENCIAL (FOGUINHO TIKTOK) */
-        .streak-container { margin: 15px 20px; padding: 20px; background: rgba(255, 255, 255, 0.02); border-radius: 22px; border: 1px solid var(--card-border); }
-        .streak-title { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-        .streak-title h4 { font-size: 0.9rem; font-weight: 600; display: flex; align-items: center; gap: 8px; }
-        .streak-title h4 i { color: #ff5500; text-shadow: 0 0 10px rgba(255,85,0,0.5); }
-        .streak-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
-        .streak-day { background: rgba(0, 0, 0, 0.3); border-radius: 14px; padding: 12px 4px; text-align: center; border: 1px solid rgba(255,255,255,0.04); transition: all 0.3s; }
-        .streak-day i { font-size: 1.3rem; color: rgba(255,255,255,0.15); margin-bottom: 6px; display: block; }
-        .streak-day span { font-size: 0.65rem; color: var(--text-muted); display: block; }
-        .streak-day.active { background: rgba(255, 69, 0, 0.08); border-color: rgba(255, 69, 0, 0.4); }
-        .streak-day.active i { background: var(--fire-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 0 4px #ff5500); }
-        .streak-day.active span { color: #fff; font-weight: 600; }
-        .btn-streak { width: 100%; margin-top: 15px; padding: 12px; background: linear-gradient(90deg, #ff4500, #ff7700); border: none; border-radius: 12px; color: white; font-weight: 700; font-size: 0.85rem; cursor: pointer; box-shadow: 0 4px 15px rgba(255,69,0,0.3); }
-        .btn-streak:disabled { background: rgba(255,255,255,0.05); color: var(--text-muted); box-shadow: none; cursor: not-allowed; }
-
-        /* SISTEMA DA ROLETA PREMIUM */
-        .roulette-container { margin: 15px 20px; padding: 22px; background: rgba(255, 255, 255, 0.02); border-radius: 22px; border: 1px solid var(--card-border); text-align: center; }
-        .roulette-wrapper { position: relative; width: 220px; height: 220px; margin: 20px auto; }
-        .roulette-wheel { 
-            width: 100%; height: 100%; border-radius: 50%; 
-            background: conic-gradient(
-                #0d1b2a 0deg 51.4deg, #0077ff 51.4deg 102.8deg, 
-                #0d1b2a 102.8deg 154.2deg, #0077ff 154.2deg 205.6deg, 
-                #0d1b2a 205.6deg 257deg, #0077ff 257deg 308.4deg, 
-                #0d1b2a 308.4deg 360deg
-            ); 
-            border: 6px solid rgba(255,255,255,0.08);
-            box-shadow: 0 0 30px rgba(0, 119, 255, 0.2), inset 0 0 20px rgba(0,0,0,0.6);
-            transition: transform 4s cubic-bezier(0.15, 0.85, 0.35, 1);
-            position: relative; overflow: hidden;
+        .btn-tg {
+            position: fixed; bottom: 85px; right: 20px; background: var(--telegram);
+            width: 50px; height: 50px; border-radius: 50%; display: flex;
+            align-items: center; justify-content: center; color: white;
+            font-size: 1.5rem; z-index: 999; text-decoration: none;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
         }
-        .roulette-marker { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 12px solid transparent; border-right: 12px solid transparent; border-top: 18px solid #ff0055; filter: drop-shadow(0 2px 5px rgba(255,0,85,0.5)); z-index: 10; }
-        .wheel-center { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 45px; height: 45px; background: #fff; border-radius: 50%; z-index: 5; box-shadow: 0 0 15px rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; }
-        .wheel-center i { color: #020408; font-size: 1rem; }
-        .wheel-number { position: absolute; width: 100%; height: 100%; top: 0; left: 0; text-align: center; font-weight: 700; font-size: 0.85rem; color: #fff; padding-top: 12px; transform-origin: 50% 50%; }
 
-        .btn-spin { width: 80%; padding: 14px; background: var(--accent-blue); border: none; border-radius: 14px; color: white; font-weight: 700; font-size: 0.9rem; cursor: pointer; box-shadow: 0 5px 20px var(--accent-glow); transition: all 0.3s; }
-        .btn-spin:disabled { background: rgba(255,255,255,0.05); color: var(--text-muted); box-shadow: none; }
-
-        /* OUTROS ELEMENTOS */
-        .plans-stack { padding: 15px 20px; display: flex; flex-direction: column; gap: 12px; }
-        .active-plan-item { background: rgba(255, 255, 255, 0.02); border-radius: 20px; padding: 18px; border: 1px solid var(--card-border); position: relative; }
-        .plan-progress-bg { height: 5px; background: rgba(255,255,255,0.04); border-radius: 10px; width: 100%; margin-top: 14px; }
-        .plan-progress-bar { height: 100%; background: linear-gradient(90deg, var(--accent-blue), #00d2ff); border-radius: 10px; box-shadow: 0 0 12px var(--accent-blue); }
-
-        .btn-tg { position: fixed; bottom: 105px; right: 20px; background: var(--telegram); width: 54px; height: 54px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.4rem; z-index: 999; box-shadow: 0 8px 25px rgba(0, 136, 204, 0.4); }
-        .social-pop { position: fixed; bottom: 105px; left: 20px; right: 85px; background: rgba(10, 15, 26, 0.95); color: #fff; padding: 14px 18px; border-radius: 18px; display: flex; align-items: center; gap: 12px; box-shadow: 0 12px 35px rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.08); z-index: 9998; backdrop-filter: blur(10px); transform: translateX(-160%); transition: transform 0.5s; }
+        .social-pop { position: fixed; bottom: 85px; left: 20px; right: 80px; background: white; color: #333; padding: 12px 15px; border-radius: 15px; display: flex; align-items: center; gap: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); z-index: 9998; transform: translateX(-150%); transition: 0.5s ease-in-out; }
         .social-pop.show { transform: translateX(0); }
 
-        .nav-bottom { position: fixed; bottom: 20px; left: 20px; right: 20px; background: rgba(10, 15, 30, 0.75); display: flex; justify-content: space-around; padding: 10px 8px; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 24px; backdrop-filter: blur(20px); box-shadow: 0 15px 35px rgba(0,0,0,0.7); z-index: 9999; }
-        .nav-item { color: #617085; text-align: center; text-decoration: none; font-size: 0.7rem; font-weight: 500; padding: 10px 14px; border-radius: 18px; display: flex; flex-direction: column; align-items: center; gap: 4px; flex: 1; }
-        .nav-item i { display: block; font-size: 1.2rem; }
-        .nav-item.active { color: #fff; background: rgba(0, 119, 255, 0.15); border: 1px solid rgba(0, 119, 255, 0.3); }
-        .nav-item.active i { color: var(--accent-blue); }
+        /* Estilos do Botão da Roleta */
+        .btn-spin {
+            width: 100%;
+            padding: 15px;
+            background: var(--red);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            margin-top: 15px;
+            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+            transition: 0.3s ease;
+        }
+        .btn-spin:disabled {
+            background: #2a1c1c;
+            color: #555;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .nav-bottom { 
+            position: fixed; 
+            bottom: 0; 
+            left: 0; 
+            width: 100%; 
+            background: rgba(0, 0, 0, 0.9); 
+            display: flex; 
+            justify-content: space-around; 
+            padding: 12px 0; 
+            border-top: 1px solid rgba(255,255,255,0.1); 
+            backdrop-filter: blur(10px);
+            z-index: 9999;
+        }
+        .nav-item { 
+            color: #555; 
+            text-align: center; 
+            text-decoration: none; 
+            font-size: 0.7rem; 
+            padding: 8px 12px;
+            border-radius: 15px;
+            transition: 0.3s;
+        }
+        .nav-item i { display: block; font-size: 1.3rem; margin-bottom: 5px; }
+
+        .nav-item.active { 
+            color: #fff; 
+            background: rgba(231, 76, 60, 0.2); 
+            border: 1px solid rgba(231, 76, 60, 0.4);
+            box-shadow: 0 0 15px rgba(231, 76, 60, 0.2);
+        }
+        .nav-item.active i { color: var(--red); }
     </style>
 </head>
 <body>
@@ -158,21 +158,21 @@
     <a href="https://t.me/+Z6pv35vKSuA4MDhh" target="_blank" class="btn-tg"><i class="fab fa-telegram-plane"></i></a>
 
     <div id="social-pop" class="social-pop">
-        <i class="fas fa-check-circle" style="color: var(--green); font-size: 1.1rem;"></i>
-        <p id="social-content" style="font-size: 0.8rem; line-height: 1.3; color: #e2e8f0;"></p>
+        <i class="fas fa-check-circle" style="color: #2ecc71;"></i>
+        <p id="social-content" style="font-size: 0.75rem;"></p>
     </div>
 
     <div id="container-aviso" class="animate__animated animate__fadeInDown">
-        <i class="fas fa-bullhorn" style="margin-right: 8px; color: var(--accent-blue);"></i>
+        <i class="fas fa-bullhorn" style="margin-right: 8px; color: var(--red);"></i>
         <span id="texto-aviso"></span>
     </div>
 
     <div class="top-bar">
-        <div>
+        <div class="user-greeting">
             <div class="logo-home"><span>Nex</span>us</div>
             <h2 id="home-nome">Carregando...</h2>
         </div>
-        <a href="perfil.html" style="color: var(--text-muted); font-size: 1.6rem;"><i class="fas fa-user-circle"></i></a>
+        <a href="perfil.html" style="color:white; font-size: 1.5rem;"><i class="fas fa-user-circle"></i></a>
     </div>
 
     <div class="portfolio-card">
@@ -180,10 +180,10 @@
             <div id="vip-tag" class="vip-badge vip-bronze">
                 <i class="fas fa-crown"></i> <span id="vip-nome">VIP Bronze</span>
             </div>
-            <small>Saldo Total Conta</small>
+            <br><small>Saldo Total Conta</small>
             <div class="balance-main">
                 <span id="home-saldo">R$ 0,00</span>
-                <i class="fas fa-eye" id="toggle-balance" style="font-size: 1.1rem; color: rgba(255,255,255,0.3); cursor: pointer; padding: 4px;"></i>
+                <i class="fas fa-eye" id="toggle-balance" style="font-size: 1.2rem; color: rgba(255,255,255,0.2); cursor: pointer;"></i>
             </div>
         </div>
         <div class="stats-grid">
@@ -195,46 +195,23 @@
     </div>
 
     <div class="actions-grid">
-        <a href="deposito.html" class="action-btn"><i class="fas fa-wallet"></i><span>Depositar</span></a>
-        <a href="saque.html" class="action-btn"><i class="fas fa-hand-holding-usd"></i><span>Sacar</span></a>
+        <a href="deposito.html" class="action-btn"><i class="fas fa-wallet"></i>Depositar</a>
+        <a href="saque.html" class="action-btn"><i class="fas fa-hand-holding-usd"></i>Sacar</a>
     </div>
 
-    <div class="streak-container">
-        <div class="streak-title">
-            <h4><i class="fas fa-fire"></i> Bônus Diário Sequencial</h4>
-            <span id="streak-count" style="font-size:0.75rem; color:var(--text-muted)">0 dias seguidos</span>
-        </div>
-        <div class="streak-grid">
-            <div class="streak-day" id="day-1"><i class="fas fa-fire"></i><span>Dia 1</span><small style="font-size:0.55rem;color:var(--text-muted)">R$0.50</small></div>
-            <div class="streak-day" id="day-2"><i class="fas fa-fire"></i><span>Dia 2</span><small style="font-size:0.55rem;color:var(--text-muted)">R$0.75</small></div>
-            <div class="streak-day" id="day-3"><i class="fas fa-fire"></i><span>Dia 3</span><small style="font-size:0.55rem;color:var(--text-muted)">R$1.00</small></div>
-            <div class="streak-day" id="day-4"><i class="fas fa-fire"></i><span>Dia 4</span><small style="font-size:0.55rem;color:var(--text-muted)">R$1.25</small></div>
-            <div class="streak-day" id="day-5"><i class="fas fa-fire"></i><span>Dia 5</span><small style="font-size:0.55rem;color:var(--text-muted)">R$1.50</small></div>
-        </div>
-        <button id="btn-resgatar-bonus" class="btn-streak" disabled>COLETAR RECOMPENSA DIÁRIA</button>
-    </div>
-
-    <div class="roulette-container">
-        <h4 style="font-size:0.9rem; font-weight:600; text-align:left; display:flex; align-items:center; gap:8px;"><i class="fas fa-ticket-alt" style="color:var(--accent-blue)"></i> Roleta da Sorte</h4>
-        <p id="roleta-giros" style="font-size:0.75rem; color:var(--text-muted); text-align:left; margin-top:4px;">Giros Disponíveis: 0</p>
+    <div class="roulette-container" style="margin: 25px 20px; padding: 22px; background: rgba(255, 255, 255, 0.03); border-radius: 22px; border: 1px solid rgba(255,255,255,0.05); text-align: center;">
+        <h4 style="font-size:0.9rem; font-weight:700; text-align:left; display:flex; align-items:center; gap:8px;"><i class="fas fa-ticket-alt" style="color:var(--red)"></i> Roleta da Sorte</h4>
+        <p id="roleta-giros" style="font-size:0.75rem; color:#888; text-align:left; margin-top:4px;">Giros Disponíveis: 0</p>
         
-        <div class="roulette-wrapper">
-            <div class="roulette-marker"></div>
-            <div class="wheel-center"><i class="fas fa-star"></i></div>
-            <div class="roulette-wheel" id="wheel">
-                <div class="wheel-number" style="transform: rotate(0deg);">1</div>
-                <div class="wheel-number" style="transform: rotate(51.4deg);">5</div>
-                <div class="wheel-number" style="transform: rotate(102.8deg);">20</div>
-                <div class="wheel-number" style="transform: rotate(154.2deg);">25</div>
-                <div class="wheel-number" style="transform: rotate(205.6deg);">30</div>
-                <div class="wheel-number" style="transform: rotate(257deg);">50</div>
-                <div class="wheel-number" style="transform: rotate(308.4deg);">100</div>
-            </div>
+        <div class="roulette-wrapper" style="position: relative; width: 240px; height: 240px; margin: 20px auto;">
+            <div class="roulette-marker" style="position: absolute; top: -12px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 12px solid transparent; border-right: 12px solid transparent; border-top: 18px solid var(--red); filter: drop-shadow(0 2px 5px rgba(231,76,96,0.5)); z-index: 10;"></div>
+            <div class="wheel-center" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 45px; height: 45px; background: #fff; border-radius: 50%; z-index: 5; box-shadow: 0 0 15px rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center;"><i class="fas fa-star" style="color: #000; font-size: 1rem;"></i></div>
+            <canvas id="rouletteCanvas" width="240" height="240" style="width: 100%; height: 100%; transform: rotate(0deg); transition: transform 4s cubic-bezier(0.15, 0.85, 0.35, 1);"></canvas>
         </div>
         <button id="btn-girar-roleta" class="btn-spin" disabled>GIRAR ROLETA</button>
     </div>
 
-    <h3 style="padding: 10px 25px 4px 25px; font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; letter-spacing: 1px;">Meus Investimentos</h3>
+    <h3 style="padding: 0 25px; font-size: 0.8rem; color: #666; text-transform: uppercase; font-weight: 700;">Meus Investimentos</h3>
     <div id="lista-investimentos" class="plans-stack"></div>
 
     <nav class="nav-bottom">
@@ -262,12 +239,60 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
+// --- UTILITÁRIOS ---
 let saldoVisivel = localStorage.getItem('saldoVisivel') !== 'false';
-const valoresRoleta = [1, 100, 50, 30, 25, 20, 5]; // Ordem exata dos graus na roleta invertido/física
 
 function formatarMoeda(valor) {
     if (!saldoVisivel) return "R$ ******";
     return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(valor || 0);
+}
+
+// --- SISTEMA DE NOTIFICAÇÕES (SOCIAL PROOF) ---
+const nomes_pop = ["Marcos S.", "Julia R.", "Phelipe A.", "Ana Paula", "Bruno K.", "Carlos G.", "Diego M."];
+const tipos_pop = ["acabou de sacar", "recebeu lucro de", "ativou um novo plano"];
+function showPop() {
+    const pop = document.getElementById('social-pop');
+    const content = document.getElementById('social-content');
+    if(!pop || !content) return;
+    const nome = nomes_pop[Math.floor(Math.random()*nomes_pop.length)];
+    const tipo = tipos_pop[Math.floor(Math.random()*tipos_pop.length)];
+    const valor = (Math.random() * (450 - 30) + 30).toFixed(2);
+    content.innerHTML = `<b>${nome}</b> ${tipo} <span style="color:#2ecc71; font-weight:700">R$ ${valor}</span>`;
+    pop.classList.add('show');
+    setTimeout(() => pop.classList.remove('show'), 4000);
+}
+setInterval(showPop, 12000);
+
+// --- MURAL DE AVISO ---
+async function carregarAviso() {
+    try {
+        const docRef = doc(db, "configuracoes", "aviso_global");
+        const snap = await getDoc(docRef);
+        if (snap.exists() && snap.data().texto.trim() !== "") {
+            document.getElementById('texto-aviso').innerText = snap.data().texto;
+            document.getElementById('container-aviso').style.display = 'block';
+        }
+    } catch (e) { console.error("Erro aviso:", e); }
+}
+
+// --- ANIMAÇÃO DE PROGRESSO ---
+function iniciarAnimacaoProgresso() {
+    const interval = setInterval(() => {
+        const agora = new Date().getTime();
+        const bars = document.querySelectorAll('.progress-timer');
+        if (bars.length === 0) return;
+        
+        bars.forEach(bar => {
+            const inicio = parseInt(bar.getAttribute('data-inicio'));
+            const fim = bar.getAttribute('data-fim');
+            if (fim) {
+                const total = parseInt(fim) - inicio;
+                const decorrido = agora - inicio;
+                let percentagem = (decorrido / total) * 100;
+                bar.style.width = Math.min(100, Math.max(0, percentagem)).toFixed(4) + '%';
+            }
+        });
+    }, 1000);
 }
 
 // --- ESCUTA EM TEMPO REAL ---
@@ -297,8 +322,6 @@ onAuthStateChanged(auth, (user) => {
                 };
 
                 atualizarElementosSaldo();
-                configurarBonusDiario(user.uid, userData);
-                configurarRoleta(user.uid, userData);
 
                 document.getElementById('toggle-balance').onclick = () => {
                     saldoVisivel = !saldoVisivel;
@@ -307,8 +330,10 @@ onAuthStateChanged(auth, (user) => {
                     carregarInvestimentos(user.uid);
                 };
 
+                // Inicia controladores secundários e a Roleta
                 carregarInvestimentos(user.uid);
                 carregarAviso();
+                configurarRoleta(user.uid, userData);
                 
                 if (!window.processamentoInicialRealizado) {
                     window.processamentoInicialRealizado = true;
@@ -321,145 +346,6 @@ onAuthStateChanged(auth, (user) => {
     }
 });
 
-// --- LÓGICA DO BÔNUS DIÁRIO (SEQUENCIAL) ---
-function configurarBonusDiario(uid, userData) {
-    const btnBonus = document.getElementById('btn-resgatar-bonus');
-    const streakCountTxt = document.getElementById('streak-count');
-    
-    let streak = userData.streakDias || 0;
-    let ultimaColetaStr = userData.ultimaColetaBonus || "";
-    
-    const agora = new Date();
-    const hojeStr = agora.getFullYear() + "-" + (agora.getMonth()+1) + "-" + agora.getDate();
-
-    if (ultimaColetaStr) {
-        const ultimaData = new Date(ultimaColetaStr + "T00:00:00");
-        const hojeData = new Date(hojeStr + "T00:00:00");
-        const diffTempo = hojeData - ultimaData;
-        const diffDias = Math.floor(diffTempo / (1000 * 60 * 60 * 24));
-
-        if (diffDias > 1) {
-            streak = 0; // Quebrou a sequência
-        }
-    }
-
-    streakCountTxt.innerText = `${streak} ${streak === 1 ? 'dia seguido' : 'dias seguidos'}`;
-
-    // Ilumina os dias conquistados até o momento atual da sequência
-    for(let i = 1; i <= 5; i++) {
-        const elementoDia = document.getElementById(`day-${i}`);
-        if(i <= streak) {
-            elementoDia.classList.add('active');
-        } else {
-            elementoDia.classList.remove('active');
-        }
-    }
-
-    if (ultimaColetaStr === hojeStr) {
-        btnBonus.disabled = true;
-        btnBonus.innerText = "RECOMPENSA COLETADA HOJE";
-    } else {
-        btnBonus.disabled = false;
-        btnBonus.innerText = `COLETAR RECOMPENSA DO DIA ${Math.min(streak + 1, 5)}`;
-    }
-
-    btnBonus.onclick = async () => {
-        btnBonus.disabled = true;
-        let novaSequencia = streak + 1;
-        if(novaSequencia > 5) novaSequencia = 1; // Reseta após o dia 5
-
-        // Valores fixados de recompensa crescentes
-        const tabelaValores = { 1: 0.50, 2: 0.75, 3: 1.00, 4: 1.25, 5: 1.50 };
-        const valorPremio = tabelaValores[novaSequencia] || 0.50;
-
-        try {
-            await updateDoc(doc(db, "usuarios", uid), {
-                saldoLucro: increment(valorPremio),
-                totalGanhos: increment(valorPremio),
-                streakDias: novaSequencia,
-                ultimaColetaBonus: hojeStr
-            });
-
-            await addDoc(collection(db, "historico"), {
-                userId: uid, valor: valorPremio, tipo: 'Bônus Diário', data: Timestamp.now()
-            });
-
-            Swal.fire({
-                icon: 'success',
-                title: 'Bônus Coletado!',
-                text: `R$ ${valorPremio.toFixed(2)} adicionados ao seu saldo de rendimentos.`,
-                background: '#0a0f1a', color: '#fff', confirmButtonColor: '#0077ff'
-            });
-        } catch(e) {
-            console.error(e);
-            btnBonus.disabled = false;
-        }
-    };
-}
-
-// --- LÓGICA DA ROLETA DA SORTE ---
-function configurarRoleta(uid, userData) {
-    const btnGirar = document.getElementById('btn-girar-roleta');
-    const txtGiros = document.getElementById('roleta-giros');
-    const wheel = document.getElementById('wheel');
-
-    const girosDisponiveis = userData.girosRoleta || 0;
-    txtGiros.innerText = `Giros Disponíveis: ${girosDisponiveis}`;
-
-    if(girosDisponiveis > 0 && !window.roletaGirando) {
-        btnGirar.disabled = false;
-    } else {
-        btnGirar.disabled = true;
-    }
-
-    btnGirar.onclick = async () => {
-        if(window.roletaGirando) return;
-        window.roletaGirando = true;
-        btnGirar.disabled = true;
-
-        // Escolhe o índice do prêmio de forma aleatória
-        const indiceSorteado = Math.floor(Math.random() * valoresRoleta.length);
-        const valorGanho = valoresRoleta[indiceSorteado];
-
-        // Calcula graus: cada fatia tem 51.4 graus (360 / 7 fatias)
-        const grausPorFatia = 360 / 7;
-        const voltasCompletas = 5 * 360; 
-        const grausAlvo = voltasCompletas + (indiceSorteado * grausPorFatia);
-
-        wheel.style.transform = `rotate(${grausAlvo}deg)`;
-
-        setTimeout(async () => {
-            try {
-                await updateDoc(doc(db, "usuarios", uid), {
-                    girosRoleta: increment(-1),
-                    saldoLucro: increment(valorGanho),
-                    totalGanhos: increment(valorGanho)
-                });
-
-                await addDoc(collection(db, "historico"), {
-                    userId: uid, valor: valorGanho, tipo: 'Prêmio Roleta', data: Timestamp.now()
-                });
-
-                Swal.fire({
-                    title: 'Parabéns!',
-                    text: `Você ganhou R$ ${valorGanho.toFixed(2)} na Roleta Premiada!`,
-                    icon: 'success',
-                    background: '#0a0f1a', color: '#fff', confirmButtonColor: '#0077ff'
-                });
-
-            } catch(e) { console.error(e); }
-            
-            // Reseta posições visuais da animação
-            window.roletaGirando = false;
-            wheel.style.transition = 'none';
-            wheel.style.transform = `rotate(${grausAlvo % 360}deg)`;
-            setTimeout(() => { wheel.style.transition = 'transform 4s cubic-bezier(0.15, 0.85, 0.35, 1)'; }, 50);
-
-        }, 4100);
-    };
-}
-
-// --- CARREGAR INVESTIMENTOS ---
 async function carregarInvestimentos(uid) {
     try {
         const q = query(collection(db, "investimentos"), where("userId", "==", uid), where("status", "==", "ativo"));
@@ -483,21 +369,25 @@ async function carregarInvestimentos(uid) {
                 <div class="active-plan-item animate__animated animate__fadeInUp">
                     <div style="display:flex; justify-content:space-between; align-items:center">
                         <div>
-                            <h4 style="font-size:0.95rem; font-weight:700; color:#fff"><i class="fas fa-layer-group" style="color:var(--accent-blue); margin-right:6px;"></i> ${inv.plano}</h4>
-                            <small style="color:var(--green); font-weight:600; display:inline-flex; align-items:center; gap:3px; margin-top:2px;"><i class="fas fa-arrow-up" style="font-size:0.7rem"></i> + ${formatarMoeda(inv.rendimentoDiario)} / dia</small>
+                            <h4 style="font-size:0.95rem; font-weight:700"><i class="fas fa-layer-group" style="color:var(--red); margin-right:5px;"></i> ${inv.plano}</h4>
+                            <small style="color:var(--green); font-weight:600"><i class="fas fa-arrow-up"></i> + ${formatarMoeda(inv.rendimentoDiario)} / dia</small>
                         </div>
                         <div style="text-align:right">
-                            <strong style="font-size:1rem; color:#fff">${formatarMoeda(inv.valor)}</strong>
-                            <br><small style="color:var(--text-muted); font-size:0.6rem; text-transform:uppercase; letter-spacing:0.5px">Investido</small>
+                            <strong style="font-size:1rem">${formatarMoeda(inv.valor)}</strong>
+                            <br><small style="color:#888; font-size:0.6rem; text-transform:uppercase">Investido</small>
                         </div>
                     </div>
                     <div class="plan-progress-bg">
-                        <div class="plan-progress-bar progress-timer" style="width:${progresso}%"></div>
+                        <div class="plan-progress-bar progress-timer" 
+                             data-inicio="${dataCriacao.getTime()}" 
+                             data-fim="${dataExpiracao ? dataExpiracao.getTime() : ''}" 
+                             style="width:${progresso}%">
+                        </div>
                     </div>
                 </div>`;
         });
 
-        document.getElementById('lista-investimentos').innerHTML = htmlContent || '<p style="text-align:center; color:var(--text-muted); font-size:0.85rem; margin-top:20px;">Nenhum investimento ativo.</p>';
+        document.getElementById('lista-investimentos').innerHTML = htmlContent || '<p style="text-align:center; color:#444; font-size:0.85rem; margin-top:20px;">Nenhum investimento ativo.</p>';
         document.getElementById('stat-investido').innerText = formatarMoeda(totalInvestido);
         
         const vipTag = document.getElementById('vip-tag');
@@ -506,44 +396,114 @@ async function carregarInvestimentos(uid) {
         else if (totalInvestido >= 500) { vipTag.className = "vip-badge vip-ouro"; vipNome.innerText = "VIP Ouro"; }
         else { vipTag.className = "vip-badge vip-bronze"; vipNome.innerText = "VIP Bronze"; }
 
-    } catch (e) { console.error(e); }
+    } catch (e) { console.error("Erro investimentos:", e); }
 }
 
-// --- MURAL DE AVISO ---
-async function carregarAviso() {
-    try {
-        const docRef = doc(db, "configuracoes", "aviso_global");
-        const snap = await getDoc(docRef);
-        if (snap.exists() && snap.data().texto.trim() !== "") {
-            document.getElementById('texto-aviso').innerText = snap.data().texto;
-            document.getElementById('container-aviso').style.display = 'block';
+// --- LÓGICA DO MOTOR DA ROLETA PREMIUM (CANVAS 2D) ---
+function configurarRoleta(uid, userData) {
+    const btnGirar = document.getElementById('btn-girar-roleta');
+    const txtGiros = document.getElementById('roleta-giros');
+    const canvas = document.getElementById('rouletteCanvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+
+    const girosDisponiveis = userData.girosRoleta || 0;
+    txtGiros.innerText = `Giros Disponíveis: ${girosDisponiveis}`;
+
+    const premios = [1, 5, 20, 25, 30, 50, 100];
+    const numFatias = premios.length;
+    const arco = (2 * Math.PI) / numFatias;
+
+    function desenharRoleta() {
+        ctx.clearRect(0, 0, 240, 240);
+        for (let i = 0; i < numFatias; i++) {
+            const anguloFatia = i * arco - Math.PI / 2 - arco / 2;
+            
+            // Layout de cores espelhadas de forma organizada
+            ctx.fillStyle = (i % 2 === 0) ? "#0e0606" : "#e74c3c";
+            
+            ctx.beginPath();
+            ctx.moveTo(120, 120);
+            ctx.arc(120, 120, 115, anguloFatia, anguloFatia + arco);
+            ctx.lineTo(120, 120);
+            ctx.fill();
+            ctx.strokeStyle = "rgba(255,255,255,0.05)";
+            ctx.lineWidth = 1.5;
+            ctx.stroke();
+
+            // Renderizar Textos Centralizados
+            ctx.save();
+            ctx.fillStyle = "#ffffff";
+            ctx.font = "bold 13px 'Inter', sans-serif";
+            ctx.translate(120, 120);
+            ctx.rotate(anguloFatia + arco / 2);
+            ctx.textAlign = "right";
+            ctx.fillText(premios[i].toString(), 102, 5);
+            ctx.restore();
         }
-    } catch (e) { console.error(e); }
+    }
+    desenharRoleta();
+
+    if (girosDisponiveis > 0 && !window.roletaGirando) {
+        btnGirar.disabled = false;
+    } else {
+        btnGirar.disabled = true;
+    }
+
+    btnGirar.onclick = async () => {
+        if (window.roletaGirando) return;
+        window.roletaGirando = true;
+        btnGirar.disabled = true;
+
+        const indiceSorteado = Math.floor(Math.random() * numFatias);
+        const valorGanho = premios[indiceSorteado];
+
+        const grausPorFatia = 360 / numFatias;
+        const fatiasInvertidas = (numFatias - indiceSorteado) % numFatias;
+        const voltasCompletas = 6 * 360; 
+        const grausAlvo = voltasCompletas + (fatiasInvertidas * grausPorFatia);
+
+        canvas.style.transition = 'transform 4s cubic-bezier(0.15, 0.85, 0.35, 1)';
+        canvas.style.transform = `rotate(${grausAlvo}deg)`;
+
+        setTimeout(async () => {
+            try {
+                await updateDoc(doc(db, "usuarios", uid), {
+                    girosRoleta: increment(-1),
+                    saldoLucro: increment(valorGanho),
+                    totalGanhos: increment(valorGanho)
+                });
+
+                await addDoc(collection(db, "historico"), {
+                    userId: uid, valor: valorGanho, tipo: 'Prêmio Roleta', data: Timestamp.now()
+                });
+
+                Swal.fire({
+                    title: 'Parabéns!',
+                    text: `Você ganhou R$ ${valorGanho.toFixed(2)} na Roleta Premiada!`,
+                    icon: 'success',
+                    background: '#1a0505', color: '#fff', confirmButtonColor: '#e74c3c'
+                });
+
+            } catch (e) { console.error(e); }
+            
+            window.roletaGirando = false;
+            canvas.style.transition = 'none';
+            canvas.style.transform = `rotate(${grausAlvo % 360}deg)`;
+        }, 4100);
+    };
 }
 
-// --- NOTIFICAÇÕES (SOCIAL PROOF) ---
-const nomes_pop = ["Marcos S.", "Julia R.", "Phelipe A.", "Ana Paula", "Bruno K.", "Carlos G.", "Diego M."];
-const tipos_pop = ["acabou de sacar", "recebeu lucro de", "ativou um novo plano"];
-function showPop() {
-    const pop = document.getElementById('social-pop');
-    const content = document.getElementById('social-content');
-    if(!pop || !content) return;
-    const nome = nomes_pop[Math.floor(Math.random()*nomes_pop.length)];
-    const tipo = tipos_pop[Math.floor(Math.random()*tipos_pop.length)];
-    const valor = (Math.random() * (450 - 30) + 30).toFixed(2);
-    content.innerHTML = `<b>${nome}</b> ${tipo} <span style="color:var(--green); font-weight:700">R$ ${valor}</span>`;
-    pop.classList.add('show');
-    setTimeout(() => pop.classList.remove('show'), 4000);
-}
-setInterval(showPop, 12000);
-
-// --- PROCESSAMENTO PRINCIPAL ---
 async function processarLogicaNegocio(uid, userData) {
     if (!sessionStorage.getItem('notificacaoBoasVindas')) {
-        Swal.fire({
-            title: `<span style="color: #0077ff;">Nexus</span> Intelligence`,
-            html: `<p style="color: #cbd5e1; font-size: 0.9rem;">Bem-vindo de volta, <b>${userData.nome}</b>!<br>Seus rendimentos são processados a cada 24h.</p>`,
-            background: '#0a0f1a', color: '#fff', confirmButtonText: 'ACESSAR PAINEL', confirmButtonColor: '#0077ff', borderRadius: '24px'
+        await Swal.fire({
+            title: `<span style="color: #e74c3c;">Nexus</span> Intelligence`,
+            html: `<p style="color: #aaa; font-size: 0.9rem;">Bem-vindo de volta, <b>${userData.nome}</b>!<br>Seus rendimentos são processados a cada 24h.</p>`,
+            background: '#120303',
+            color: '#fff',
+            confirmButtonText: 'ACESSAR PAINEL',
+            confirmButtonColor: '#e74c3c',
+            borderRadius: '25px'
         });
         sessionStorage.setItem('notificacaoBoasVindas', 'true');
     }
@@ -578,14 +538,13 @@ async function processarLogicaNegocio(uid, userData) {
             await addDoc(collection(db, "historico"), {
                 userId: uid, valor: ganhosParaCreditar, tipo: 'Rendimento', data: Timestamp.now()
             });
-            Swal.fire({ 
-                title: 'Lucros Creditados!', 
-                text: `R$ ${ganhosParaCreditar.toFixed(2)} adicionados ao seu saldo.`, 
-                icon: 'success', background: '#0a0f1a', color: '#fff', confirmButtonColor: '#0077ff'
-            });
+            Swal.fire({ title: 'Lucros Creditados!', text: `R$ ${ganhosParaCreditar.toFixed(2)} adicionados ao seu saldo.`, icon: 'success' });
         }
+        
         if (updates.length > 0) await Promise.all(updates);
-    } catch (e) { console.error(e); }
+        iniciarAnimacaoProgresso();
+
+    } catch (e) { console.error("Erro lucro:", e); }
 }
     </script>
 </body>
