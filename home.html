@@ -5,21 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Início - Nexus</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
 
     <style>
         :root {
-            --bg: linear-gradient(180deg, #1a0505 0%, #000000 100%);
-            --card: rgba(255, 255, 255, 0.05);
-            --red: #e74c3c;
-            --green: #2ecc71;
-            --gold: #FFD700;
+            --bg-gradient: linear-gradient(180deg, #060b19 0%, #020408 100%);
+            --card-glass: rgba(255, 255, 255, 0.03);
+            --card-border: rgba(255, 255, 255, 0.07);
+            --blue-primary: #0052ff;
+            --blue-glow: rgba(0, 82, 255, 0.25);
+            --cyan-neon: #00d2ff;
+            --green-success: #00e676;
+            --text-muted: #8a99ad;
             --telegram: #0088cc;
+            --bronze: #ff9800;
+            --silver: #e0e0e0;
+            --gold: #ffd700;
         }
 
-        /* REMOVENDO O CONTORNO AZUL DE SELEÇÃO E FOCO */
         * { 
             margin: 0; 
             padding: 0; 
@@ -29,115 +34,205 @@
             -webkit-tap-highlight-color: transparent; 
         }
 
-        body { background: var(--bg); color: white; padding-bottom: 110px; min-height: 100vh; overflow-x: hidden; }
-
-        /* MURAL DE AVISO DINÂMICO */
-        #container-aviso {
-            display: none;
-            margin: 10px 20px;
-            padding: 15px;
-            background: rgba(231, 76, 60, 0.15);
-            border: 1px solid rgba(231, 76, 60, 0.3);
-            border-radius: 15px;
-            color: #fff;
-            font-size: 0.85rem;
-            text-align: center;
-            animation: pulse 2s infinite;
+        body { 
+            background: var(--bg-gradient); 
+            color: white; 
+            padding-bottom: 110px; 
+            min-height: 100vh; 
+            overflow-x: hidden; 
         }
 
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.4); }
-            70% { box-shadow: 0 0 0 10px rgba(231, 76, 60, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(231, 76, 60, 0); }
+        /* MURAL DE AVISO DINÂMICO PREMIUM */
+        #container-aviso {
+            display: none;
+            margin: 15px 20px 5px 20px;
+            padding: 14px;
+            background: rgba(0, 82, 255, 0.08);
+            border: 1px solid rgba(0, 210, 255, 0.2);
+            border-radius: 18px;
+            color: #fff;
+            font-size: 0.82rem;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            animation: pulseGlow 2.5s infinite alternate;
+        }
+
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 5px rgba(0, 210, 255, 0.1); border-color: rgba(0, 210, 255, 0.2); }
+            100% { box-shadow: 0 0 15px rgba(0, 82, 255, 0.25); border-color: rgba(0, 210, 255, 0.4); }
         }
 
         /* Top Bar */
-        .top-bar { padding: 25px; display: flex; justify-content: space-between; align-items: center; }
-        .logo-home { font-weight: 700; font-size: 1.2rem; letter-spacing: -1px; }
-        .logo-home span { color: var(--red); }
-        .user-greeting h2 { font-size: 1.1rem; text-transform: capitalize; }
+        .top-bar { padding: 25px 20px 15px 20px; display: flex; justify-content: space-between; align-items: center; }
+        .logo-home { font-weight: 800; font-size: 1.3rem; letter-spacing: -1px; }
+        .logo-home span { color: var(--cyan-neon); text-shadow: 0 0 10px rgba(0, 210, 255, 0.3); }
+        .user-greeting h2 { font-size: 1.05rem; font-weight: 700; color: #fff; margin-top: 2px; text-transform: capitalize; }
 
-        /* Portfolio Card */
+        /* Portfolio Card - Glassmorphism */
         .portfolio-card { 
-            margin: 0 20px; background: var(--card); border-radius: 25px; 
-            padding: 25px; border: 1px solid rgba(255,255,255,0.1);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+            margin: 0 20px; 
+            background: var(--card-glass); 
+            border-radius: 24px; 
+            padding: 25px; 
+            border: 1px solid var(--card-border);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05);
         }
-        .portfolio-header { text-align: center; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 15px; }
-        .portfolio-header small { color: #888; text-transform: uppercase; font-size: 0.65rem; letter-spacing: 1px; }
-        .balance-main { font-size: 2.2rem; font-weight: 700; color: #fff; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .portfolio-header { text-align: center; margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.04); padding-bottom: 18px; }
+        .portfolio-header small { color: var(--text-muted); text-transform: uppercase; font-size: 0.65rem; letter-spacing: 1px; font-weight: 600; }
+        .balance-main { font-size: 2.1rem; font-weight: 800; color: #fff; display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 5px; letter-spacing: -0.5px; }
         
-        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px; }
-        .stat-item { background: rgba(0,0,0,0.2); padding: 12px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.03); }
-        .stat-item span { display: block; font-size: 0.65rem; color: #888; text-transform: uppercase; margin-bottom: 5px; }
-        .stat-item strong { font-size: 0.95rem; color: #fff; }
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 15px; }
+        .stat-item { background: rgba(0,0,0,0.2); padding: 14px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.02); text-align: left; }
+        .stat-item span { display: block; font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; margin-bottom: 4px; font-weight: 500; }
+        .stat-item strong { font-size: 0.95rem; color: #fff; font-weight: 700; }
+        .stat-item #stat-ganhos { color: var(--green-success); text-shadow: 0 0 10px rgba(0,230,118,0.1); }
 
         /* VIP Badges */
-        .vip-badge { display: inline-flex; align-items: center; gap: 5px; padding: 4px 12px; border-radius: 50px; font-size: 0.65rem; font-weight: 800; text-transform: uppercase; }
-        .vip-bronze { background: #3d1a1a; color: #ff9999; }
-        .vip-ouro { background: linear-gradient(90deg, #ffd700, #b8860b); color: #000; }
-        .vip-diamante { background: linear-gradient(90deg, #e5e4e2, #7f8c8d); color: #000; }
+        .vip-badge { display: inline-flex; align-items: center; gap: 6px; padding: 5px 14px; border-radius: 50px; font-size: 0.68rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+        .vip-bronze { background: linear-gradient(135deg, #b87333, #ff9800); color: white; }
+        .vip-ouro { background: linear-gradient(135deg, #eab308, #ffd700); color: #0f172a; }
+        .vip-diamante { background: linear-gradient(135deg, #0052ff, #00d2ff); color: white; }
 
-        /* Botões de Ação */
-        .actions-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 20px; }
-        .action-btn { background: var(--card); border-radius: 18px; padding: 18px; text-align: center; color: white; text-decoration: none; border: 1px solid rgba(255,255,255,0.05); }
-        .action-btn i { font-size: 1.6rem; margin-bottom: 10px; display: block; color: var(--red); }
+        /* Botões de Ação Principais */
+        .actions-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 20px 20px 10px 20px; }
+        .action-btn { 
+            background: var(--card-glass); 
+            border-radius: 20px; 
+            padding: 16px; 
+            text-align: center; 
+            color: white; 
+            text-decoration: none; 
+            border: 1px solid var(--card-border); 
+            backdrop-filter: blur(10px);
+            font-size: 0.88rem;
+            font-weight: 600;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .action-btn i { font-size: 1.4rem; color: var(--cyan-neon); filter: drop-shadow(0 0 5px rgba(0, 210, 255, 0.3)); }
+        .action-btn:active { transform: scale(0.95); background: rgba(255,255,255,0.06); }
+
+        /* BANNER EXCLUSIVO DA ROLETA FIXADA */
+        .roulette-banner {
+            margin: 5px 20px 20px 20px;
+            background: linear-gradient(135deg, rgba(0, 82, 255, 0.15) 0%, rgba(0, 210, 255, 0.05) 100%);
+            border: 1px solid rgba(0, 210, 255, 0.25);
+            border-radius: 20px;
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(12px);
+            text-decoration: none;
+            color: white;
+            transition: 0.2s;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+        .roulette-banner:active { transform: scale(0.98); border-color: var(--cyan-neon); }
+        .roulette-left { display: flex; align-items: center; gap: 15px; text-align: left; }
+        .roulette-icon-wrapper {
+            width: 44px; height: 44px; background: rgba(0, 210, 255, 0.1); border-radius: 14px;
+            display: flex; align-items: center; justify-content: center; border: 1px solid rgba(0, 210, 255, 0.2);
+        }
+        .roulette-icon-wrapper i { font-size: 1.3rem; color: var(--cyan-neon); animation: spinWheel 8s linear infinite; }
+        @keyframes spinWheel { 100% { transform: rotate(360deg); } }
+        
+        .roulette-details h4 { font-size: 0.9rem; font-weight: 700; margin-bottom: 2px; }
+        .roulette-details p { font-size: 0.72rem; color: var(--text-muted); }
+        
+        .roulette-badge {
+            background: var(--blue-primary);
+            color: white;
+            padding: 6px 14px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            box-shadow: 0 4px 12px var(--blue-glow);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .roulette-badge.has-spins {
+            background: var(--green-success);
+            color: #020408;
+            box-shadow: 0 4px 12px rgba(0, 230, 118, 0.3);
+            animation: pulseAlert 1.5s infinite alternate;
+        }
+        @keyframes pulseAlert { 0% { transform: scale(1); } 100% { transform: scale(1.05); } }
 
         /* Listas de Investimentos */
-        .plans-stack { padding: 15px 20px; display: flex; flex-direction: column; gap: 15px; }
-        .active-plan-item { background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.03) 100%); border-radius: 22px; padding: 18px; border: 1px solid rgba(255, 255, 255, 0.1); position: relative; overflow: hidden; }
-        .plan-progress-bg { height: 4px; background: rgba(255,255,255,0.05); border-radius: 10px; width: 100%; margin-top: 10px; }
+        .plans-stack { padding: 12px 20px; display: flex; flex-direction: column; gap: 12px; }
+        .active-plan-item { 
+            background: var(--card-glass); 
+            border-radius: 22px; 
+            padding: 18px; 
+            border: 1px solid var(--card-border); 
+            position: relative; 
+            overflow: hidden; 
+            backdrop-filter: blur(8px);
+        }
+        .plan-progress-bg { height: 5px; background: rgba(255,255,255,0.05); border-radius: 10px; width: 100%; margin-top: 14px; overflow: hidden; }
         
         .plan-progress-bar { 
-            height: 100%; background: var(--red); border-radius: 10px; 
-            box-shadow: 0 0 10px var(--red); 
+            height: 100%; 
+            background: linear-gradient(90deg, var(--blue-primary), var(--cyan-neon)); 
+            border-radius: 10px; 
+            box-shadow: 0 0 10px var(--blue-glow); 
             transition: width 1s linear;
         }
 
         /* Telegram Button */
         .btn-tg {
-            position: fixed; bottom: 85px; right: 20px; background: var(--telegram);
-            width: 50px; height: 50px; border-radius: 50%; display: flex;
+            position: fixed; bottom: 95px; right: 20px; background: var(--telegram);
+            width: 48px; height: 48px; border-radius: 50%; display: flex;
             align-items: center; justify-content: center; color: white;
-            font-size: 1.5rem; z-index: 999; text-decoration: none;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+            font-size: 1.3rem; z-index: 999; text-decoration: none;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+            transition: 0.2s;
         }
+        .btn-tg:active { transform: scale(0.9); }
 
         /* Social Pop */
-        .social-pop { position: fixed; bottom: 85px; left: 20px; right: 80px; background: white; color: #333; padding: 12px 15px; border-radius: 15px; display: flex; align-items: center; gap: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); z-index: 9998; transform: translateX(-150%); transition: 0.5s ease-in-out; }
+        .social-pop { position: fixed; bottom: 95px; left: 20px; right: 85px; background: #060b19; color: #fff; padding: 12px 16px; border-radius: 16px; display: flex; align-items: center; gap: 12px; box-shadow: 0 15px 35px rgba(0,0,0,0.6); z-index: 9998; border: 1px solid var(--card-border); backdrop-filter: blur(15px); transform: translateX(-160%); transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
         .social-pop.show { transform: translateX(0); }
 
-        /* Nav Bottom COM EFEITO VIDRO VERMELHO NO ATIVO */
+        /* Menu Inferior Estilo Fintech Moderno */
         .nav-bottom { 
             position: fixed; 
             bottom: 0; 
             left: 0; 
             width: 100%; 
-            background: rgba(0, 0, 0, 0.9); 
+            background: rgba(2, 4, 8, 0.85); 
             display: flex; 
             justify-content: space-around; 
             padding: 12px 0; 
-            border-top: 1px solid rgba(255,255,255,0.1); 
-            backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(255,255,255,0.06); 
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            z-index: 10000;
+            height: 76px;
+            align-items: center;
         }
         .nav-item { 
-            color: #555; 
+            color: #4b5563; 
             text-align: center; 
             text-decoration: none; 
-            font-size: 0.7rem; 
-            padding: 8px 12px;
-            border-radius: 15px;
-            transition: 0.3s;
+            flex: 1; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            gap: 5px;
+            padding: 6px 0;
+            transition: 0.2s;
         }
-        .nav-item i { display: block; font-size: 1.3rem; margin-bottom: 5px; }
+        .nav-item i { font-size: 1.25rem; }
+        .nav-item span { font-size: 0.68rem; font-weight: 500; }
 
-        .nav-item.active { 
-            color: #fff; 
-            background: rgba(231, 76, 60, 0.2); 
-            border: 1px solid rgba(231, 76, 60, 0.4);
-            box-shadow: 0 0 15px rgba(231, 76, 60, 0.2);
-        }
-        .nav-item.active i { color: var(--red); }
+        .nav-item.active { color: #fff; }
+        .nav-item.active i { color: var(--cyan-neon); filter: drop-shadow(0 0 6px rgba(0, 210, 255, 0.5)); }
     </style>
 </head>
 <body>
@@ -145,21 +240,21 @@
     <a href="https://t.me/+Z6pv35vKSuA4MDhh" target="_blank" class="btn-tg"><i class="fab fa-telegram-plane"></i></a>
 
     <div id="social-pop" class="social-pop">
-        <i class="fas fa-check-circle" style="color: #2ecc71;"></i>
-        <p id="social-content" style="font-size: 0.75rem;"></p>
+        <i class="fas fa-check-circle" style="color: var(--green-success);"></i>
+        <p id="social-content" style="font-size: 0.78rem; line-height: 1.4;"></p>
     </div>
 
     <div id="container-aviso" class="animate__animated animate__fadeInDown">
-        <i class="fas fa-bullhorn" style="margin-right: 8px; color: var(--red);"></i>
+        <i class="fas fa-bullhorn" style="margin-right: 8px; color: var(--cyan-neon);"></i>
         <span id="texto-aviso"></span>
     </div>
 
     <div class="top-bar">
         <div class="user-greeting">
             <div class="logo-home"><span>Nex</span>us</div>
-            <h2 id="home-nome">Carregando...</h2>
+            <h2 id="home-nome">Sincronizando...</h2>
         </div>
-        <a href="perfil.html" style="color:white; font-size: 1.5rem;"><i class="fas fa-user-circle"></i></a>
+        <a href="perfil.html" style="color: var(--text-muted); font-size: 1.5rem; transition: 0.2s;"><i class="fas fa-user-circle"></i></a>
     </div>
 
     <div class="portfolio-card">
@@ -167,46 +262,52 @@
             <div id="vip-tag" class="vip-badge vip-bronze">
                 <i class="fas fa-crown"></i> <span id="vip-nome">VIP Bronze</span>
             </div>
-            <br><small>Saldo Total Conta</small>
+            <br><small style="margin-top: 10px; display: inline-block;">Patrimônio Total</small>
             <div class="balance-main">
                 <span id="home-saldo">R$ 0,00</span>
-                <i class="fas fa-eye" id="toggle-balance" style="font-size: 1.2rem; color: rgba(255,255,255,0.2); cursor: pointer;"></i>
+                <i class="fas fa-eye" id="toggle-balance" style="font-size: 1.1rem; color: rgba(255,255,255,0.2); cursor: pointer; transition: 0.2s;"></i>
             </div>
         </div>
         <div class="stats-grid">
-            <div class="stat-item"><span>Total Investido</span><strong id="stat-investido">R$ 0,00</strong></div>
-            <div class="stat-item"><span>Total Ganhos</span><strong id="stat-ganhos" style="color:var(--green)">R$ 0,00</strong></div>
-            <div class="stat-item"><span>Para Investir</span><strong id="stat-investir">R$ 0,00</strong></div>
-            <div class="stat-item"><span>Para Saque</span><strong id="stat-saque">R$ 0,00</strong></div>
+            <div class="stat-item"><span>Alocado</span><strong id="stat-investido">R$ 0,00</strong></div>
+            <div class="stat-item"><span>Total Retornado</span><strong id="stat-ganhos">R$ 0,00</strong></div>
+            <div class="stat-item"><span>Conta Principal</span><strong id="stat-investir">R$ 0,00</strong></div>
+            <div class="stat-item"><span>Disponível Saque</span><strong id="stat-saque">R$ 0,00</strong></div>
         </div>
     </div>
 
     <div class="actions-grid">
         <a href="deposito.html" class="action-btn"><i class="fas fa-wallet"></i>Depositar</a>
         <a href="saque.html" class="action-btn"><i class="fas fa-hand-holding-usd"></i>Sacar</a>
-        
-        <a href="roleta.html" class="action-btn"><i class="fas fa-dharmachakra"></i>Roleta</a>
-        
-        <a href="#" id="btn-checkin" class="action-btn">
-            <i class="fas fa-fire"></i>Check-in
-            <span id="streak-display" style="display:block; font-size: 0.7rem; color: #f39c12; margin-top: 5px; font-weight: bold;">🔥 0 dias</span>
-        </a>
     </div>
 
-    <h3 style="padding: 0 25px; font-size: 0.8rem; color: #666; text-transform: uppercase; font-weight: 700;">Meus Investimentos</h3>
+    <a href="roleta.html" class="roulette-banner">
+        <div class="roulette-left">
+            <div class="roulette-icon-wrapper">
+                <i class="fas fa-dharmachakra"></i>
+            </div>
+            <div class="roulette-details">
+                <h4>Roleta Premiada</h4>
+                <p>Tente a sorte e multiplique bancas</p>
+            </div>
+        </div>
+        <div id="roleta-badge" class="roulette-badge">0 Giros</div>
+    </a>
+
+    <h3 style="padding: 0 25px 5px 25px; font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px;">Meus Contratos Ativos</h3>
     <div id="lista-investimentos" class="plans-stack"></div>
 
     <nav class="nav-bottom">
-        <a href="home.html" class="nav-item active"><i class="fas fa-home"></i>Início</a>
-        <a href="planos.html" class="nav-item"><i class="fas fa-chart-pie"></i>Planos</a>
-        <a href="indicacao.html" class="nav-item"><i class="fas fa-share-alt"></i>Indicar</a>
-        <a href="perfil.html" class="nav-item"><i class="fas fa-user-alt"></i>Perfil</a>
+        <a href="home.html" class="nav-item active"><i class="fas fa-home"></i><span>Início</span></a>
+        <a href="planos.html" class="nav-item"><i class="fas fa-chart-pie"></i><span>Planos</span></a>
+        <a href="indicacao.html" class="nav-item"><i class="fas fa-share-alt"></i><span>Indicar</span></a>
+        <a href="perfil.html" class="nav-item"><i class="fas fa-user-alt"></i><span>Perfil</span></a>
     </nav>
 
     <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-import { getFirestore, doc, getDoc, collection, query, where, getDocs, updateDoc, addDoc, Timestamp, increment, onSnapshot, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { getFirestore, doc, getDoc, collection, query, where, getDocs, updateDoc, addDoc, Timestamp, increment, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyDKDFw7khZzM9hIX7xbbrbFQeESiCLnmOw",
@@ -239,7 +340,7 @@ function showPop() {
     const nome = nomes_pop[Math.floor(Math.random()*nomes_pop.length)];
     const tipo = tipos_pop[Math.floor(Math.random()*tipos_pop.length)];
     const valor = (Math.random() * (450 - 30) + 30).toFixed(2);
-    content.innerHTML = `<b>${nome}</b> ${tipo} <span style="color:#2ecc71; font-weight:700">R$ ${valor}</span>`;
+    content.innerHTML = `<b>${nome}</b> ${tipo} <span style="color:var(--green-success); font-weight:700">R$ ${valor}</span>`;
     pop.classList.add('show');
     setTimeout(() => pop.classList.remove('show'), 4000);
 }
@@ -277,13 +378,9 @@ function iniciarAnimacaoProgresso() {
     }, 1000);
 }
 
-// --- ESCUTA EM TEMPO REAL (CORAÇÃO DO CÓDIGO) ---
+// --- ESCUTA EM TEMPO REAL ---
 onAuthStateChanged(auth, (user) => {
     if (user) {
-        // Armazena o ID do usuário logado globalmente para uso do Check-in
-        window.currentUserUid = user.uid;
-
-        // Escuta mudanças no documento do usuário (Saldo, Nome, etc)
         onSnapshot(doc(db, "usuarios", user.uid), (docSnap) => {
             if (docSnap.exists()) {
                 const userData = docSnap.data();
@@ -292,16 +389,21 @@ onAuthStateChanged(auth, (user) => {
                     return;
                 }
                 
-                // 1. Atualiza Nome e Saldo Imediatamente
+                // Atualiza Nome do Usuário
                 document.getElementById('home-nome').innerText = `Olá, ${userData.nome || "Investidor"}`;
                 
-                // Atualiza o contador de ofensiva (foguinho) na tela em tempo real
-                const streakCount = userData.streak || 0;
-                const streakDisplay = document.getElementById('streak-display');
-                if (streakDisplay) {
-                    streakDisplay.innerText = `🔥 ${streakCount} dias`;
+                // CORREÇÃO DA ROLETA: Monitora os giros reais da conta e atualiza dinamicamente o card
+                const girosAtuais = userData.giros || 0;
+                const badgeRoleta = document.getElementById('roleta-badge');
+                if (girosAtuais > 0) {
+                    badgeRoleta.innerText = `${girosAtuais} ${girosAtuais === 1 ? 'Giro Grátis' : 'Giros Grátis'}`;
+                    badgeRoleta.className = "roulette-badge has-spins";
+                } else {
+                    badgeRoleta.innerText = "0 Giros";
+                    badgeRoleta.className = "roulette-badge";
                 }
-                
+
+                // Cálculo Financeiro Integrado
                 const saldoPrincipal = Number(userData.saldo) || 0;
                 const saldoLucro = Number(userData.saldoLucro) || 0;
                 const totalGanhos = Number(userData.totalGanhos) || 0;
@@ -317,22 +419,19 @@ onAuthStateChanged(auth, (user) => {
 
                 atualizarElementosSaldo();
 
-                // Toggle de visibilidade
+                // Toggle Olho Ocultar/Exibir Saldo
                 document.getElementById('toggle-balance').onclick = () => {
                     saldoVisivel = !saldoVisivel;
                     localStorage.setItem('saldoVisivel', saldoVisivel);
                     atualizarElementosSaldo();
-                    // Atualiza também o total investido que é carregado depois
                     carregarInvestimentos(user.uid);
                 };
 
-                // 2. Dispara funções secundárias
                 carregarInvestimentos(user.uid);
                 carregarAviso();
                 
-                // Só processa lucros e boas-vindas uma vez por sessão para não travar a UI
                 if (!window.processamentoInicialRealizado) {
-                    window.processamentoInicialRealized = true;
+                    window.processamentoInicialRealizado = true;
                     processarLogicaNegocio(user.uid, userData);
                 }
             }
@@ -365,12 +464,12 @@ async function carregarInvestimentos(uid) {
                 <div class="active-plan-item animate__animated animate__fadeInUp">
                     <div style="display:flex; justify-content:space-between; align-items:center">
                         <div>
-                            <h4 style="font-size:0.95rem; font-weight:700"><i class="fas fa-layer-group" style="color:var(--red); margin-right:5px;"></i> ${inv.plano}</h4>
-                            <small style="color:var(--green); font-weight:600"><i class="fas fa-arrow-up"></i> + ${formatarMoeda(inv.rendimentoDiario)} / dia</small>
+                            <h4 style="font-size:0.95rem; font-weight:700; color:#fff"><i class="fas fa-layer-group" style="color:var(--cyan-neon); margin-right:6px;"></i> ${inv.plano}</h4>
+                            <small style="color:var(--green-success); font-weight:600"><i class="fas fa-arrow-up"></i> + ${formatarMoeda(inv.rendimentoDiario)} / dia</small>
                         </div>
                         <div style="text-align:right">
-                            <strong style="font-size:1rem">${formatarMoeda(inv.valor)}</strong>
-                            <br><small style="color:#888; font-size:0.6rem; text-transform:uppercase">Investido</small>
+                            <strong style="font-size:1rem; color:#fff">${formatarMoeda(inv.valor)}</strong>
+                            <br><small style="color:var(--text-muted); font-size:0.6rem; text-transform:uppercase">Alocado</small>
                         </div>
                     </div>
                     <div class="plan-progress-bg">
@@ -383,10 +482,10 @@ async function carregarInvestimentos(uid) {
                 </div>`;
         });
 
-        document.getElementById('lista-investimentos').innerHTML = htmlContent || '<p style="text-align:center; color:#444; font-size:0.85rem; margin-top:20px;">Nenhum investimento ativo.</p>';
+        document.getElementById('lista-investimentos').innerHTML = htmlContent || '<p style="text-align:center; color:var(--text-muted); font-size:0.82rem; margin-top:20px;">Nenhum contrato em andamento.</p>';
         document.getElementById('stat-investido').innerText = formatarMoeda(totalInvestido);
         
-        // Atualiza Badge VIP
+        // Atualiza Badge VIP de Acordo com o Volume
         const vipTag = document.getElementById('vip-tag');
         const vipNome = document.getElementById('vip-nome');
         if (totalInvestido >= 2000) { vipTag.className = "vip-badge vip-diamante"; vipNome.innerText = "VIP Diamante"; }
@@ -397,21 +496,21 @@ async function carregarInvestimentos(uid) {
 }
 
 async function processarLogicaNegocio(uid, userData) {
-    // 1. Verificar boas vindas
+    // Bem-vindo Customizado no Padrão Premium Dark Blue
     if (!sessionStorage.getItem('notificacaoBoasVindas')) {
         await Swal.fire({
-            title: `<span style="color: #e74c3c;">Nexus</span> Intelligence`,
-            html: `<p style="color: #aaa; font-size: 0.9rem;">Bem-vindo de volta, <b>${userData.nome}</b>!<br>Seus rendimentos são processados a cada 24h.</p>`,
-            background: '#120303',
+            title: `<span style="color: var(--cyan-neon);">Nexus</span> Premium`,
+            html: `<p style="color: #8a99ad; font-size: 0.9rem;">Olá <b>${userData.nome}</b>, bem-vindo à inteligência financeira.<br>Seus ciclos de rendimento rodam automaticamente.</p>`,
+            background: '#060b19',
             color: '#fff',
-            confirmButtonText: 'ACESSAR PAINEL',
-            confirmButtonColor: '#e74c3c',
-            borderRadius: '25px'
+            confirmButtonText: 'ENTRAR NO PAINEL',
+            confirmButtonColor: '#0052ff',
+            borderRadius: '24px'
         });
         sessionStorage.setItem('notificacaoBoasVindas', 'true');
     }
 
-    // 2. Logica de lucros diários (só roda uma vez ao entrar)
+    // Processamento de lucros diários (retroativo de segurança 24h)
     try {
         const q = query(collection(db, "investimentos"), where("userId", "==", uid), where("status", "==", "ativo"));
         const snap = await getDocs(q);
@@ -442,97 +541,21 @@ async function processarLogicaNegocio(uid, userData) {
             await addDoc(collection(db, "historico"), {
                 userId: uid, valor: ganhosParaCreditar, tipo: 'Rendimento', data: Timestamp.now()
             });
-            Swal.fire({ title: 'Lucros Creditados!', text: `R$ ${ganhosParaCreditar.toFixed(2)} adicionados ao seu saldo.`, icon: 'success' });
+            Swal.fire({ 
+                title: 'Rendimentos Creditados!', 
+                text: `R$ ${ganhosParaCreditar.toFixed(2)} sincronizados ao seu extrato.`, 
+                icon: 'success',
+                background: '#060b19',
+                color: '#fff',
+                confirmButtonColor: '#0052ff'
+            });
         }
         
         if (updates.length > 0) await Promise.all(updates);
         iniciarAnimacaoProgresso();
 
-    } catch (e) { console.error("Erro lucro:", e); }
+    } catch (e) { console.error("Erro processamento de lucro:", e); }
 }
-
-// --- LOGICA RECOMPENSA DIÁRIA DE CHECK-IN (FOGUINHO) ---
-document.getElementById('btn-checkin').addEventListener('click', async (e) => {
-    e.preventDefault();
-    if (!window.currentUserUid) return;
-
-    try {
-        const userRef = doc(db, "usuarios", window.currentUserUid);
-        const docSnap = await getDoc(userRef);
-        
-        if (docSnap.exists()) {
-            const data = docSnap.data();
-            
-            // Função para retornar datas exatas no Horário de Brasília (evita bugs de fuso horário internacional)
-            const obterDataBrasilia = (diasOffset = 0) => {
-                const dataBase = new Date();
-                dataBase.setDate(dataBase.getDate() + diasOffset);
-                const configFuso = { timeZone: 'America/Sao_Paulo', year: 'numeric', month: '2-digit', day: '2-digit' };
-                const fragmentos = dataBase.toLocaleDateString('pt-BR', configFuso).split('/');
-                return `${fragmentos[2]}-${fragmentos[1]}-${fragmentos[0]}`; // Formato ISO YYYY-MM-DD
-            };
-            
-            const hoje = obterDataBrasilia(0);
-            const ontem = obterDataBrasilia(-1);
-            
-            let lastCheckin = data.lastCheckin || "";
-            let streak = data.streak || 0;
-
-            // Bloqueia se já resgatou hoje
-            if (lastCheckin === hoje) {
-                Swal.fire({
-                    title: 'Já resgatado!',
-                    text: 'Você já manteve sua ofensiva hoje. Retorne amanhã para alimentar seu foguinho!',
-                    icon: 'info',
-                    background: '#120303',
-                    color: '#fff',
-                    confirmButtonColor: '#e74c3c'
-                });
-                return;
-            }
-
-            // Validação da Ofensiva (Igual Tiktok/Duolingo)
-            if (lastCheckin === ontem) {
-                streak += 1; // Resgatou consecutivamente: evolui o foguinho
-            } else {
-                streak = 1; // Quebrou a sequência ou é o primeiro acesso: recomeça do dia 1
-            }
-
-            // Definição da Recompensa Base + Multiplicador de Ofensiva
-            // Exemplo: R$ 0,10 fixo + R$ 0,05 adicionais por dia consecutivo atingido
-            let valorPremio = 0.10 + (streak * 0.05);
-
-            // Atualização dos dados do usuário no Firestore (Saldo para Saque e Ofensiva)
-            await updateDoc(userRef, {
-                lastCheckin: hoje,
-                streak: streak,
-                saldoLucro: increment(valorPremio),
-                totalGanhos: increment(valorPremio)
-            });
-            
-            // Grava a transação de recompensa no histórico global da plataforma
-            await addDoc(collection(db, "historico"), {
-                userId: window.currentUserUid, 
-                valor: valorPremio, 
-                tipo: `Check-in Diário (Dia ${streak})`, 
-                data: Timestamp.now()
-            });
-
-            // Dispara Feedback de Sucesso Animado
-            Swal.fire({
-                title: `🔥 Dia ${streak} de Ofensiva!`,
-                text: `Seu foguinho cresceu! Você ganhou uma recompensa de R$ ${valorPremio.toFixed(2)}.`,
-                icon: 'success',
-                background: '#120303',
-                color: '#fff',
-                confirmButtonColor: '#e74c3c'
-            });
-        }
-    } catch (erro) {
-        console.error("Erro ao computar check-in:", erro);
-        Swal.fire('Erro Operacional', 'Não foi possível registrar seu check-in neste momento. Tente novamente.', 'error');
-    }
-});
     </script>
 </body>
 </html>
