@@ -185,13 +185,11 @@
         <a href="deposito.html" class="action-btn"><i class="fas fa-wallet"></i>Depositar</a>
         <a href="saque.html" class="action-btn"><i class="fas fa-hand-holding-usd"></i>Sacar</a>
         
-        <a href="roleta.html" class="action-btn">
-            <i class="fas fa-dharmachakra" style="color: #9b59b6;"></i>Roleta
-        </a>
+        <a href="roleta.html" class="action-btn"><i class="fas fa-dharmachakra"></i>Roleta</a>
         
         <a href="#" id="btn-checkin" class="action-btn">
-            <i class="fas fa-fire" style="color: #e67e22;"></i>Check-in
-            <span id="streak-display" style="display:block; font-size: 0.75rem; color: #f39c12; margin-top: 5px; font-weight: bold;">🔥 0 dias</span>
+            <i class="fas fa-fire"></i>Check-in
+            <span id="streak-display" style="display:block; font-size: 0.7rem; color: #f39c12; margin-top: 5px; font-weight: bold;">🔥 0 dias</span>
         </a>
     </div>
 
@@ -282,7 +280,8 @@ function iniciarAnimacaoProgresso() {
 // --- ESCUTA EM TEMPO REAL (CORAÇÃO DO CÓDIGO) ---
 onAuthStateChanged(auth, (user) => {
     if (user) {
-        window.currentUserUid = user.uid; // Define o UID globalmente para o check-in
+        // Armazena o ID do usuário logado globalmente para uso do Check-in
+        window.currentUserUid = user.uid;
 
         // Escuta mudanças no documento do usuário (Saldo, Nome, etc)
         onSnapshot(doc(db, "usuarios", user.uid), (docSnap) => {
@@ -296,13 +295,13 @@ onAuthStateChanged(auth, (user) => {
                 // 1. Atualiza Nome e Saldo Imediatamente
                 document.getElementById('home-nome').innerText = `Olá, ${userData.nome || "Investidor"}`;
                 
-                // Atualiza a ofensiva (foguinho) na tela
+                // Atualiza o contador de ofensiva (foguinho) na tela em tempo real
                 const streakCount = userData.streak || 0;
                 const streakDisplay = document.getElementById('streak-display');
-                if(streakDisplay) {
+                if (streakDisplay) {
                     streakDisplay.innerText = `🔥 ${streakCount} dias`;
                 }
-
+                
                 const saldoPrincipal = Number(userData.saldo) || 0;
                 const saldoLucro = Number(userData.saldoLucro) || 0;
                 const totalGanhos = Number(userData.totalGanhos) || 0;
@@ -333,7 +332,7 @@ onAuthStateChanged(auth, (user) => {
                 
                 // Só processa lucros e boas-vindas uma vez por sessão para não travar a UI
                 if (!window.processamentoInicialRealizado) {
-                    window.processamentoInicialRealizado = true;
+                    window.processamentoInicialRealized = true;
                     processarLogicaNegocio(user.uid, userData);
                 }
             }
@@ -452,7 +451,7 @@ async function processarLogicaNegocio(uid, userData) {
     } catch (e) { console.error("Erro lucro:", e); }
 }
 
-// --- SISTEMA DE CHECK-IN DIÁRIO (FOGUINHO) ---
+// --- LOGICA RECOMPENSA DIÁRIA DE CHECK-IN (FOGUINHO) ---
 document.getElementById('btn-checkin').addEventListener('click', async (e) => {
     e.preventDefault();
     if (!window.currentUserUid) return;
@@ -464,20 +463,26 @@ document.getElementById('btn-checkin').addEventListener('click', async (e) => {
         if (docSnap.exists()) {
             const data = docSnap.data();
             
-            // Função para pegar a data no fuso do Brasil evitando bugs de fuso horário
-            const getBrazilDate = (dateOb) => {
-                return new Date(dateOb.getTime() - (3 * 60 * 60 * 1000)).toISOString().split('T')[0];
+            // Função para retornar datas exatas no Horário de Brasília (evita bugs de fuso horário internacional)
+            const obterDataBrasilia = (diasOffset = 0) => {
+                const dataBase = new Date();
+                dataBase.setDate(dataBase.getDate() + diasOffset);
+                const configFuso = { timeZone: 'America/Sao_Paulo', year: 'numeric', month: '2-digit', day: '2-digit' };
+                const fragmentos = dataBase.toLocaleDateString('pt-BR', configFuso).split('/');
+                return `${fragmentos[2]}-${fragmentos[1]}-${fragmentos[0]}`; // Formato ISO YYYY-MM-DD
             };
             
-            const hoje = getBrazilDate(new Date()); 
+            const hoje = obterDataBrasilia(0);
+            const ontem = obterDataBrasilia(-1);
+            
             let lastCheckin = data.lastCheckin || "";
             let streak = data.streak || 0;
 
-            // Se já fez check-in hoje
+            // Bloqueia se já resgatou hoje
             if (lastCheckin === hoje) {
                 Swal.fire({
                     title: 'Já resgatado!',
-                    text: 'Você já fez seu check-in hoje. Volte amanhã para aumentar seu foguinho!',
+                    text: 'Você já manteve sua ofensiva hoje. Retorne amanhã para alimentar seu foguinho!',
                     icon: 'info',
                     background: '#120303',
                     color: '#fff',
@@ -486,49 +491,46 @@ document.getElementById('btn-checkin').addEventListener('click', async (e) => {
                 return;
             }
 
-            // Descobre qual foi a data de ontem
-            const ontemObj = new Date();
-            ontemObj.setDate(ontemObj.getDate() - 1);
-            const ontemStr = getBrazilDate(ontemObj);
-
-            // Verifica a ofensiva
-            if (lastCheckin === ontemStr) {
-                streak += 1; // Mantém a ofensiva e soma 1
+            // Validação da Ofensiva (Igual Tiktok/Duolingo)
+            if (lastCheckin === ontem) {
+                streak += 1; // Resgatou consecutivamente: evolui o foguinho
             } else {
-                streak = 1; // Quebrou a ofensiva, volta para o dia 1
+                streak = 1; // Quebrou a sequência ou é o primeiro acesso: recomeça do dia 1
             }
 
-            // Recompensa financeira: Ex: R$ 0.10 base + R$ 0.05 por cada dia de ofensiva
-            let recompensa = 0.10 + (streak * 0.05);
+            // Definição da Recompensa Base + Multiplicador de Ofensiva
+            // Exemplo: R$ 0,10 fixo + R$ 0,05 adicionais por dia consecutivo atingido
+            let valorPremio = 0.10 + (streak * 0.05);
 
-            // Atualiza o banco de dados do usuário
+            // Atualização dos dados do usuário no Firestore (Saldo para Saque e Ofensiva)
             await updateDoc(userRef, {
                 lastCheckin: hoje,
                 streak: streak,
-                saldo: increment(recompensa)
+                saldoLucro: increment(valorPremio),
+                totalGanhos: increment(valorPremio)
             });
             
-            // Registra o ganho no histórico
+            // Grava a transação de recompensa no histórico global da plataforma
             await addDoc(collection(db, "historico"), {
                 userId: window.currentUserUid, 
-                valor: recompensa, 
-                tipo: `Check-in Dia ${streak}`, 
+                valor: valorPremio, 
+                tipo: `Check-in Diário (Dia ${streak})`, 
                 data: Timestamp.now()
             });
 
-            // Mostra o pop-up de sucesso
+            // Dispara Feedback de Sucesso Animado
             Swal.fire({
-                title: `🔥 Dia ${streak}!`,
-                text: `Ofensiva mantida! Você ganhou R$ ${recompensa.toFixed(2)}.`,
+                title: `🔥 Dia ${streak} de Ofensiva!`,
+                text: `Seu foguinho cresceu! Você ganhou uma recompensa de R$ ${valorPremio.toFixed(2)}.`,
                 icon: 'success',
                 background: '#120303',
                 color: '#fff',
                 confirmButtonColor: '#e74c3c'
             });
         }
-    } catch (error) {
-        console.error("Erro no check-in:", error);
-        Swal.fire('Erro', 'Não foi possível fazer o check-in agora.', 'error');
+    } catch (erro) {
+        console.error("Erro ao computar check-in:", erro);
+        Swal.fire('Erro Operacional', 'Não foi possível registrar seu check-in neste momento. Tente novamente.', 'error');
     }
 });
     </script>
