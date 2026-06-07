@@ -21,6 +21,7 @@
             --diamond: #e0e0e0;
             --telegram: #0088cc;
             --text-muted: #8492a6;
+            --fire-gradient: linear-gradient(0deg, #ff4500, #ffaa00);
         }
 
         * { 
@@ -35,12 +36,11 @@
         body { 
             background: var(--bg); 
             color: white; 
-            padding-bottom: 120px; 
+            padding-bottom: 140px; 
             min-height: 100vh; 
             overflow-x: hidden; 
         }
 
-        /* MURAL DE AVISO PREMIUM */
         #container-aviso {
             display: none;
             margin: 15px 20px 5px 20px;
@@ -52,34 +52,18 @@
             font-size: 0.85rem;
             text-align: center;
             backdrop-filter: blur(8px);
-            box-shadow: 0 4px 20px rgba(0, 119, 255, 0.05);
         }
 
-        /* Top Bar */
         .top-bar { 
             padding: 25px 20px 15px 20px; 
             display: flex; 
             justify-content: space-between; 
             align-items: center; 
         }
-        .logo-home { 
-            font-weight: 700; 
-            font-size: 1.3rem; 
-            letter-spacing: -0.5px; 
-        }
-        .logo-home span { 
-            color: var(--accent-blue); 
-            text-shadow: 0 0 12px var(--accent-glow);
-        }
-        .user-greeting h2 { 
-            font-size: 0.9rem; 
-            color: var(--text-muted); 
-            font-weight: 500;
-            text-transform: capitalize;
-            margin-top: 2px;
-        }
+        .logo-home { font-weight: 700; font-size: 1.3rem; letter-spacing: -0.5px; }
+        .logo-home span { color: var(--accent-blue); text-shadow: 0 0 12px var(--accent-glow); }
+        .user-greeting h2 { font-size: 0.9rem; color: var(--text-muted); font-weight: 500; text-transform: capitalize; margin-top: 2px; }
 
-        /* Fintech Digital Wallet Card */
         .portfolio-card { 
             margin: 15px 20px; 
             background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%); 
@@ -87,235 +71,85 @@
             padding: 25px; 
             border: 1px solid var(--card-border);
             backdrop-filter: blur(12px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.5), inset 0 1px 1px rgba(255,255,255,0.1);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
             position: relative;
-            overflow: hidden;
-        }
-        
-        .portfolio-card::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -50%;
-            width: 150px;
-            height: 150px;
-            background: var(--accent-blue);
-            filter: blur(90px);
-            opacity: 0.15;
-            pointer-events: none;
         }
 
-        .portfolio-header { 
-            text-align: center; 
-            margin-bottom: 22px; 
-            padding-bottom: 18px; 
-            border-bottom: 1px solid rgba(255,255,255,0.06); 
-        }
-        .portfolio-header small { 
-            color: var(--text-muted); 
-            text-transform: uppercase; 
-            font-size: 0.65rem; 
-            letter-spacing: 1.5px; 
-            display: block;
-            margin-top: 12px;
-        }
-        .balance-main { 
-            font-size: 2.3rem; 
-            font-weight: 700; 
-            color: #fff; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            gap: 12px; 
-            margin-top: 4px;
-            letter-spacing: -0.5px;
-        }
+        .portfolio-header { text-align: center; margin-bottom: 22px; padding-bottom: 18px; border-bottom: 1px solid rgba(255,255,255,0.06); }
+        .portfolio-header small { color: var(--text-muted); text-transform: uppercase; font-size: 0.65rem; letter-spacing: 1.5px; display: block; margin-top: 12px; }
+        .balance-main { font-size: 2.3rem; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 4px; }
         
-        /* Stats Premium Grid */
-        .stats-grid { 
-            display: grid; 
-            grid-template-columns: 1fr 1fr; 
-            gap: 12px; 
-        }
-        .stat-item { 
-            background: rgba(0, 0, 0, 0.2); 
-            padding: 14px; 
-            border-radius: 16px; 
-            border: 1px solid rgba(255,255,255,0.02); 
-        }
-        .stat-item span { 
-            display: block; 
-            font-size: 0.65rem; 
-            color: var(--text-muted); 
-            text-transform: uppercase; 
-            margin-bottom: 4px; 
-            letter-spacing: 0.5px;
-        }
-        .stat-item strong { 
-            font-size: 1rem; 
-            color: #fff; 
-            font-weight: 600;
-        }
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .stat-item { background: rgba(0, 0, 0, 0.2); padding: 14px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.02); }
+        .stat-item span { display: block; font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; margin-bottom: 4px; }
+        .stat-item strong { font-size: 1rem; color: #fff; font-weight: 600; }
 
-        /* Neon VIP Badges */
-        .vip-badge { 
-            display: inline-flex; 
-            align-items: center; 
-            gap: 6px; 
-            padding: 5px 14px; 
-            border-radius: 50px; 
-            font-size: 0.65rem; 
-            font-weight: 700; 
-            text-transform: uppercase; 
-            letter-spacing: 0.5px;
-        }
+        .vip-badge { display: inline-flex; align-items: center; gap: 6px; padding: 5px 14px; border-radius: 50px; font-size: 0.65rem; font-weight: 700; text-transform: uppercase; }
         .vip-bronze { background: rgba(255, 255, 255, 0.08); color: #fff; border: 1px solid rgba(255,255,255,0.1); }
-        .vip-ouro { background: rgba(255, 179, 0, 0.12); color: var(--gold); border: 1px solid rgba(255, 179, 0, 0.3); box-shadow: 0 0 10px rgba(255, 179, 0, 0.1); }
-        .vip-diamante { background: rgba(224, 224, 224, 0.12); color: var(--diamond); border: 1px solid rgba(224, 224, 224, 0.3); box-shadow: 0 0 10px rgba(224, 224, 224, 0.1); }
+        .vip-ouro { background: rgba(255, 179, 0, 0.12); color: var(--gold); border: 1px solid rgba(255, 179, 0, 0.3); }
+        .vip-diamante { background: rgba(224, 224, 224, 0.12); color: var(--diamond); border: 1px solid rgba(224, 224, 224, 0.3); }
 
-        /* Botões de Ação Estilo Fintech App */
-        .actions-grid { 
-            display: grid; 
-            grid-template-columns: 1fr 1fr; 
-            gap: 14px; 
-            padding: 10px 20px 20px 20px; 
-        }
+        .actions-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; padding: 10px 20px 20px 20px; }
         .action-btn { 
             background: linear-gradient(135deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%);
-            border-radius: 18px; 
-            padding: 16px; 
-            text-align: center; 
-            color: white; 
-            text-decoration: none; 
-            border: 1px solid var(--card-border); 
-            font-weight: 600;
-            font-size: 0.9rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            transition: background 0.3s, transform 0.2s;
+            border-radius: 18px; padding: 16px; text-align: center; color: white; text-decoration: none; border: 1px solid var(--card-border); 
+            font-weight: 600; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; gap: 10px;
         }
-        .action-btn:active { transform: scale(0.97); background: rgba(255,255,255,0.08); }
-        .action-btn i { 
-            font-size: 1.2rem; 
-            color: var(--accent-blue); 
-            text-shadow: 0 0 10px var(--accent-glow);
-        }
+        .action-btn i { color: var(--accent-blue); }
 
-        /* Listas de Investimentos Ativos */
-        .plans-stack { 
-            padding: 15px 20px; 
-            display: flex; 
-            flex-direction: column; 
-            gap: 12px; 
-        }
-        .active-plan-item { 
-            background: rgba(255, 255, 255, 0.02); 
-            border-radius: 20px; 
-            padding: 18px; 
-            border: 1px solid var(--card-border); 
-            position: relative; 
-            overflow: hidden; 
-        }
-        .plan-progress-bg { 
-            height: 5px; 
-            background: rgba(255,255,255,0.04); 
-            border-radius: 10px; 
-            width: 100%; 
-            margin-top: 14px; 
-        }
-        .plan-progress-bar { 
-            height: 100%; 
-            background: linear-gradient(90deg, var(--accent-blue), #00d2ff); 
-            border-radius: 10px; 
-            box-shadow: 0 0 12px var(--accent-blue); 
-            transition: width 1s linear;
-        }
+        /* SISTEMA DE BÔNUS SEQUENCIAL (FOGUINHO TIKTOK) */
+        .streak-container { margin: 15px 20px; padding: 20px; background: rgba(255, 255, 255, 0.02); border-radius: 22px; border: 1px solid var(--card-border); }
+        .streak-title { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .streak-title h4 { font-size: 0.9rem; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+        .streak-title h4 i { color: #ff5500; text-shadow: 0 0 10px rgba(255,85,0,0.5); }
+        .streak-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+        .streak-day { background: rgba(0, 0, 0, 0.3); border-radius: 14px; padding: 12px 4px; text-align: center; border: 1px solid rgba(255,255,255,0.04); transition: all 0.3s; }
+        .streak-day i { font-size: 1.3rem; color: rgba(255,255,255,0.15); margin-bottom: 6px; display: block; }
+        .streak-day span { font-size: 0.65rem; color: var(--text-muted); display: block; }
+        .streak-day.active { background: rgba(255, 69, 0, 0.08); border-color: rgba(255, 69, 0, 0.4); }
+        .streak-day.active i { background: var(--fire-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 0 4px #ff5500); }
+        .streak-day.active span { color: #fff; font-weight: 600; }
+        .btn-streak { width: 100%; margin-top: 15px; padding: 12px; background: linear-gradient(90deg, #ff4500, #ff7700); border: none; border-radius: 12px; color: white; font-weight: 700; font-size: 0.85rem; cursor: pointer; box-shadow: 0 4px 15px rgba(255,69,0,0.3); }
+        .btn-streak:disabled { background: rgba(255,255,255,0.05); color: var(--text-muted); box-shadow: none; cursor: not-allowed; }
 
-        /* Telegram Floating Action Button */
-        .btn-tg {
-            position: fixed; 
-            bottom: 95px; 
-            right: 20px; 
-            background: var(--telegram);
-            width: 54px; 
-            height: 54px; 
-            border-radius: 50%; 
-            display: flex;
-            align-items: center; 
-            justify-content: center; 
-            color: white;
-            font-size: 1.4rem; 
-            z-index: 999; 
-            text-decoration: none;
-            box-shadow: 0 8px 25px rgba(0, 136, 204, 0.4);
-            transition: transform 0.2s;
+        /* SISTEMA DA ROLETA PREMIUM */
+        .roulette-container { margin: 15px 20px; padding: 22px; background: rgba(255, 255, 255, 0.02); border-radius: 22px; border: 1px solid var(--card-border); text-align: center; }
+        .roulette-wrapper { position: relative; width: 220px; height: 220px; margin: 20px auto; }
+        .roulette-wheel { 
+            width: 100%; height: 100%; border-radius: 50%; 
+            background: conic-gradient(
+                #0d1b2a 0deg 51.4deg, #0077ff 51.4deg 102.8deg, 
+                #0d1b2a 102.8deg 154.2deg, #0077ff 154.2deg 205.6deg, 
+                #0d1b2a 205.6deg 257deg, #0077ff 257deg 308.4deg, 
+                #0d1b2a 308.4deg 360deg
+            ); 
+            border: 6px solid rgba(255,255,255,0.08);
+            box-shadow: 0 0 30px rgba(0, 119, 255, 0.2), inset 0 0 20px rgba(0,0,0,0.6);
+            transition: transform 4s cubic-bezier(0.15, 0.85, 0.35, 1);
+            position: relative; overflow: hidden;
         }
-        .btn-tg:active { transform: scale(0.9); }
+        .roulette-marker { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 12px solid transparent; border-right: 12px solid transparent; border-top: 18px solid #ff0055; filter: drop-shadow(0 2px 5px rgba(255,0,85,0.5)); z-index: 10; }
+        .wheel-center { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 45px; height: 45px; background: #fff; border-radius: 50%; z-index: 5; box-shadow: 0 0 15px rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; }
+        .wheel-center i { color: #020408; font-size: 1rem; }
+        .wheel-number { position: absolute; width: 100%; height: 100%; top: 0; left: 0; text-align: center; font-weight: 700; font-size: 0.85rem; color: #fff; padding-top: 12px; transform-origin: 50% 50%; }
 
-        /* Social Notification Card Pop */
-        .social-pop { 
-            position: fixed; 
-            bottom: 95px; 
-            left: 20px; 
-            right: 85px; 
-            background: rgba(10, 15, 26, 0.95); 
-            color: #fff; 
-            padding: 14px 18px; 
-            border-radius: 18px; 
-            display: flex; 
-            align-items: center; 
-            gap: 12px; 
-            box-shadow: 0 12px 35px rgba(0,0,0,0.6); 
-            border: 1px solid rgba(255,255,255,0.08);
-            z-index: 9998; 
-            backdrop-filter: blur(10px);
-            transform: translateX(-160%); 
-            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
-        }
+        .btn-spin { width: 80%; padding: 14px; background: var(--accent-blue); border: none; border-radius: 14px; color: white; font-weight: 700; font-size: 0.9rem; cursor: pointer; box-shadow: 0 5px 20px var(--accent-glow); transition: all 0.3s; }
+        .btn-spin:disabled { background: rgba(255,255,255,0.05); color: var(--text-muted); box-shadow: none; }
+
+        /* OUTROS ELEMENTOS */
+        .plans-stack { padding: 15px 20px; display: flex; flex-direction: column; gap: 12px; }
+        .active-plan-item { background: rgba(255, 255, 255, 0.02); border-radius: 20px; padding: 18px; border: 1px solid var(--card-border); position: relative; }
+        .plan-progress-bg { height: 5px; background: rgba(255,255,255,0.04); border-radius: 10px; width: 100%; margin-top: 14px; }
+        .plan-progress-bar { height: 100%; background: linear-gradient(90deg, var(--accent-blue), #00d2ff); border-radius: 10px; box-shadow: 0 0 12px var(--accent-blue); }
+
+        .btn-tg { position: fixed; bottom: 105px; right: 20px; background: var(--telegram); width: 54px; height: 54px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.4rem; z-index: 999; box-shadow: 0 8px 25px rgba(0, 136, 204, 0.4); }
+        .social-pop { position: fixed; bottom: 105px; left: 20px; right: 85px; background: rgba(10, 15, 26, 0.95); color: #fff; padding: 14px 18px; border-radius: 18px; display: flex; align-items: center; gap: 12px; box-shadow: 0 12px 35px rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.08); z-index: 9998; backdrop-filter: blur(10px); transform: translateX(-160%); transition: transform 0.5s; }
         .social-pop.show { transform: translateX(0); }
 
-        /* Floating Navigation Pill-Bar (Estilo iOS Premium) */
-        .nav-bottom { 
-            position: fixed; 
-            bottom: 20px; 
-            left: 20px; 
-            right: 20px;
-            background: rgba(10, 15, 30, 0.75); 
-            display: flex; 
-            justify-content: space-around; 
-            padding: 10px 8px; 
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 24px;
-            backdrop-filter: blur(20px);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.7);
-            z-index: 9999;
-        }
-        .nav-item { 
-            color: #617085; 
-            text-align: center; 
-            text-decoration: none; 
-            font-size: 0.7rem; 
-            font-weight: 500;
-            padding: 10px 14px;
-            border-radius: 18px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-            flex: 1;
-        }
-        .nav-item i { display: block; font-size: 1.2rem; transition: transform 0.2s; }
-        .nav-item:active i { transform: scale(0.85); }
-
-        .nav-item.active { 
-            color: #fff; 
-            background: rgba(0, 119, 255, 0.15); 
-            border: 1px solid rgba(0, 119, 255, 0.3);
-            box-shadow: 0 0 20px rgba(0, 119, 255, 0.15);
-        }
+        .nav-bottom { position: fixed; bottom: 20px; left: 20px; right: 20px; background: rgba(10, 15, 30, 0.75); display: flex; justify-content: space-around; padding: 10px 8px; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 24px; backdrop-filter: blur(20px); box-shadow: 0 15px 35px rgba(0,0,0,0.7); z-index: 9999; }
+        .nav-item { color: #617085; text-align: center; text-decoration: none; font-size: 0.7rem; font-weight: 500; padding: 10px 14px; border-radius: 18px; display: flex; flex-direction: column; align-items: center; gap: 4px; flex: 1; }
+        .nav-item i { display: block; font-size: 1.2rem; }
+        .nav-item.active { color: #fff; background: rgba(0, 119, 255, 0.15); border: 1px solid rgba(0, 119, 255, 0.3); }
         .nav-item.active i { color: var(--accent-blue); }
     </style>
 </head>
@@ -338,7 +172,7 @@
             <div class="logo-home"><span>Nex</span>us</div>
             <h2 id="home-nome">Carregando...</h2>
         </div>
-        <a href="perfil.html" style="color: var(--text-muted); font-size: 1.6rem; transition: color 0.2s;"><i class="fas fa-user-circle"></i></a>
+        <a href="perfil.html" style="color: var(--text-muted); font-size: 1.6rem;"><i class="fas fa-user-circle"></i></a>
     </div>
 
     <div class="portfolio-card">
@@ -365,6 +199,41 @@
         <a href="saque.html" class="action-btn"><i class="fas fa-hand-holding-usd"></i><span>Sacar</span></a>
     </div>
 
+    <div class="streak-container">
+        <div class="streak-title">
+            <h4><i class="fas fa-fire"></i> Bônus Diário Sequencial</h4>
+            <span id="streak-count" style="font-size:0.75rem; color:var(--text-muted)">0 dias seguidos</span>
+        </div>
+        <div class="streak-grid">
+            <div class="streak-day" id="day-1"><i class="fas fa-fire"></i><span>Dia 1</span><small style="font-size:0.55rem;color:var(--text-muted)">R$0.50</small></div>
+            <div class="streak-day" id="day-2"><i class="fas fa-fire"></i><span>Dia 2</span><small style="font-size:0.55rem;color:var(--text-muted)">R$0.75</small></div>
+            <div class="streak-day" id="day-3"><i class="fas fa-fire"></i><span>Dia 3</span><small style="font-size:0.55rem;color:var(--text-muted)">R$1.00</small></div>
+            <div class="streak-day" id="day-4"><i class="fas fa-fire"></i><span>Dia 4</span><small style="font-size:0.55rem;color:var(--text-muted)">R$1.25</small></div>
+            <div class="streak-day" id="day-5"><i class="fas fa-fire"></i><span>Dia 5</span><small style="font-size:0.55rem;color:var(--text-muted)">R$1.50</small></div>
+        </div>
+        <button id="btn-resgatar-bonus" class="btn-streak" disabled>COLETAR RECOMPENSA DIÁRIA</button>
+    </div>
+
+    <div class="roulette-container">
+        <h4 style="font-size:0.9rem; font-weight:600; text-align:left; display:flex; align-items:center; gap:8px;"><i class="fas fa-ticket-alt" style="color:var(--accent-blue)"></i> Roleta da Sorte</h4>
+        <p id="roleta-giros" style="font-size:0.75rem; color:var(--text-muted); text-align:left; margin-top:4px;">Giros Disponíveis: 0</p>
+        
+        <div class="roulette-wrapper">
+            <div class="roulette-marker"></div>
+            <div class="wheel-center"><i class="fas fa-star"></i></div>
+            <div class="roulette-wheel" id="wheel">
+                <div class="wheel-number" style="transform: rotate(0deg);">1</div>
+                <div class="wheel-number" style="transform: rotate(51.4deg);">5</div>
+                <div class="wheel-number" style="transform: rotate(102.8deg);">20</div>
+                <div class="wheel-number" style="transform: rotate(154.2deg);">25</div>
+                <div class="wheel-number" style="transform: rotate(205.6deg);">30</div>
+                <div class="wheel-number" style="transform: rotate(257deg);">50</div>
+                <div class="wheel-number" style="transform: rotate(308.4deg);">100</div>
+            </div>
+        </div>
+        <button id="btn-girar-roleta" class="btn-spin" disabled>GIRAR ROLETA</button>
+    </div>
+
     <h3 style="padding: 10px 25px 4px 25px; font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; letter-spacing: 1px;">Meus Investimentos</h3>
     <div id="lista-investimentos" class="plans-stack"></div>
 
@@ -378,7 +247,7 @@
     <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-import { getFirestore, doc, getDoc, collection, query, where, getDocs, updateDoc, addDoc, Timestamp, increment, onSnapshot, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { getFirestore, doc, getDoc, collection, query, where, getDocs, updateDoc, addDoc, Timestamp, increment, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyDKDFw7khZzM9hIX7xbbrbFQeESiCLnmOw",
@@ -393,60 +262,12 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// --- UTILITÁRIOS ---
 let saldoVisivel = localStorage.getItem('saldoVisivel') !== 'false';
+const valoresRoleta = [1, 100, 50, 30, 25, 20, 5]; // Ordem exata dos graus na roleta invertido/física
 
 function formatarMoeda(valor) {
     if (!saldoVisivel) return "R$ ******";
     return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(valor || 0);
-}
-
-// --- SISTEMA DE NOTIFICAÇÕES (SOCIAL PROOF) ---
-const nomes_pop = ["Marcos S.", "Julia R.", "Phelipe A.", "Ana Paula", "Bruno K.", "Carlos G.", "Diego M."];
-const tipos_pop = ["acabou de sacar", "recebeu lucro de", "ativou um novo plano"];
-function showPop() {
-    const pop = document.getElementById('social-pop');
-    const content = document.getElementById('social-content');
-    if(!pop || !content) return;
-    const nome = nomes_pop[Math.floor(Math.random()*nomes_pop.length)];
-    const tipo = tipos_pop[Math.floor(Math.random()*tipos_pop.length)];
-    const valor = (Math.random() * (450 - 30) + 30).toFixed(2);
-    content.innerHTML = `<b>${nome}</b> ${tipo} <span style="color:var(--green); font-weight:700">R$ ${valor}</span>`;
-    pop.classList.add('show');
-    setTimeout(() => pop.classList.remove('show'), 4000);
-}
-setInterval(showPop, 12000);
-
-// --- MURAL DE AVISO ---
-async function carregarAviso() {
-    try {
-        const docRef = doc(db, "configuracoes", "aviso_global");
-        const snap = await getDoc(docRef);
-        if (snap.exists() && snap.data().texto.trim() !== "") {
-            document.getElementById('texto-aviso').innerText = snap.data().texto;
-            document.getElementById('container-aviso').style.display = 'block';
-        }
-    } catch (e) { console.error("Erro aviso:", e); }
-}
-
-// --- ANIMAÇÃO DE PROGRESSO ---
-function iniciarAnimacaoProgresso() {
-    const interval = setInterval(() => {
-        const agora = new Date().getTime();
-        const bars = document.querySelectorAll('.progress-timer');
-        if (bars.length === 0) return;
-        
-        bars.forEach(bar => {
-            const inicio = parseInt(bar.getAttribute('data-inicio'));
-            const fim = bar.getAttribute('data-fim');
-            if (fim) {
-                const total = parseInt(fim) - inicio;
-                const decorrido = agora - inicio;
-                let percentagem = (decorrido / total) * 100;
-                bar.style.width = Math.min(100, Math.max(0, percentagem)).toFixed(4) + '%';
-            }
-        });
-    }, 1000);
 }
 
 // --- ESCUTA EM TEMPO REAL ---
@@ -476,6 +297,8 @@ onAuthStateChanged(auth, (user) => {
                 };
 
                 atualizarElementosSaldo();
+                configurarBonusDiario(user.uid, userData);
+                configurarRoleta(user.uid, userData);
 
                 document.getElementById('toggle-balance').onclick = () => {
                     saldoVisivel = !saldoVisivel;
@@ -498,6 +321,145 @@ onAuthStateChanged(auth, (user) => {
     }
 });
 
+// --- LÓGICA DO BÔNUS DIÁRIO (SEQUENCIAL) ---
+function configurarBonusDiario(uid, userData) {
+    const btnBonus = document.getElementById('btn-resgatar-bonus');
+    const streakCountTxt = document.getElementById('streak-count');
+    
+    let streak = userData.streakDias || 0;
+    let ultimaColetaStr = userData.ultimaColetaBonus || "";
+    
+    const agora = new Date();
+    const hojeStr = agora.getFullYear() + "-" + (agora.getMonth()+1) + "-" + agora.getDate();
+
+    if (ultimaColetaStr) {
+        const ultimaData = new Date(ultimaColetaStr + "T00:00:00");
+        const hojeData = new Date(hojeStr + "T00:00:00");
+        const diffTempo = hojeData - ultimaData;
+        const diffDias = Math.floor(diffTempo / (1000 * 60 * 60 * 24));
+
+        if (diffDias > 1) {
+            streak = 0; // Quebrou a sequência
+        }
+    }
+
+    streakCountTxt.innerText = `${streak} ${streak === 1 ? 'dia seguido' : 'dias seguidos'}`;
+
+    // Ilumina os dias conquistados até o momento atual da sequência
+    for(let i = 1; i <= 5; i++) {
+        const elementoDia = document.getElementById(`day-${i}`);
+        if(i <= streak) {
+            elementoDia.classList.add('active');
+        } else {
+            elementoDia.classList.remove('active');
+        }
+    }
+
+    if (ultimaColetaStr === hojeStr) {
+        btnBonus.disabled = true;
+        btnBonus.innerText = "RECOMPENSA COLETADA HOJE";
+    } else {
+        btnBonus.disabled = false;
+        btnBonus.innerText = `COLETAR RECOMPENSA DO DIA ${Math.min(streak + 1, 5)}`;
+    }
+
+    btnBonus.onclick = async () => {
+        btnBonus.disabled = true;
+        let novaSequencia = streak + 1;
+        if(novaSequencia > 5) novaSequencia = 1; // Reseta após o dia 5
+
+        // Valores fixados de recompensa crescentes
+        const tabelaValores = { 1: 0.50, 2: 0.75, 3: 1.00, 4: 1.25, 5: 1.50 };
+        const valorPremio = tabelaValores[novaSequencia] || 0.50;
+
+        try {
+            await updateDoc(doc(db, "usuarios", uid), {
+                saldoLucro: increment(valorPremio),
+                totalGanhos: increment(valorPremio),
+                streakDias: novaSequencia,
+                ultimaColetaBonus: hojeStr
+            });
+
+            await addDoc(collection(db, "historico"), {
+                userId: uid, valor: valorPremio, tipo: 'Bônus Diário', data: Timestamp.now()
+            });
+
+            Swal.fire({
+                icon: 'success',
+                title: 'Bônus Coletado!',
+                text: `R$ ${valorPremio.toFixed(2)} adicionados ao seu saldo de rendimentos.`,
+                background: '#0a0f1a', color: '#fff', confirmButtonColor: '#0077ff'
+            });
+        } catch(e) {
+            console.error(e);
+            btnBonus.disabled = false;
+        }
+    };
+}
+
+// --- LÓGICA DA ROLETA DA SORTE ---
+function configurarRoleta(uid, userData) {
+    const btnGirar = document.getElementById('btn-girar-roleta');
+    const txtGiros = document.getElementById('roleta-giros');
+    const wheel = document.getElementById('wheel');
+
+    const girosDisponiveis = userData.girosRoleta || 0;
+    txtGiros.innerText = `Giros Disponíveis: ${girosDisponiveis}`;
+
+    if(girosDisponiveis > 0 && !window.roletaGirando) {
+        btnGirar.disabled = false;
+    } else {
+        btnGirar.disabled = true;
+    }
+
+    btnGirar.onclick = async () => {
+        if(window.roletaGirando) return;
+        window.roletaGirando = true;
+        btnGirar.disabled = true;
+
+        // Escolhe o índice do prêmio de forma aleatória
+        const indiceSorteado = Math.floor(Math.random() * valoresRoleta.length);
+        const valorGanho = valoresRoleta[indiceSorteado];
+
+        // Calcula graus: cada fatia tem 51.4 graus (360 / 7 fatias)
+        const grausPorFatia = 360 / 7;
+        const voltasCompletas = 5 * 360; 
+        const grausAlvo = voltasCompletas + (indiceSorteado * grausPorFatia);
+
+        wheel.style.transform = `rotate(${grausAlvo}deg)`;
+
+        setTimeout(async () => {
+            try {
+                await updateDoc(doc(db, "usuarios", uid), {
+                    girosRoleta: increment(-1),
+                    saldoLucro: increment(valorGanho),
+                    totalGanhos: increment(valorGanho)
+                });
+
+                await addDoc(collection(db, "historico"), {
+                    userId: uid, valor: valorGanho, tipo: 'Prêmio Roleta', data: Timestamp.now()
+                });
+
+                Swal.fire({
+                    title: 'Parabéns!',
+                    text: `Você ganhou R$ ${valorGanho.toFixed(2)} na Roleta Premiada!`,
+                    icon: 'success',
+                    background: '#0a0f1a', color: '#fff', confirmButtonColor: '#0077ff'
+                });
+
+            } catch(e) { console.error(e); }
+            
+            // Reseta posições visuais da animação
+            window.roletaGirando = false;
+            wheel.style.transition = 'none';
+            wheel.style.transform = `rotate(${grausAlvo % 360}deg)`;
+            setTimeout(() => { wheel.style.transition = 'transform 4s cubic-bezier(0.15, 0.85, 0.35, 1)'; }, 50);
+
+        }, 4100);
+    };
+}
+
+// --- CARREGAR INVESTIMENTOS ---
 async function carregarInvestimentos(uid) {
     try {
         const q = query(collection(db, "investimentos"), where("userId", "==", uid), where("status", "==", "ativo"));
@@ -530,11 +492,7 @@ async function carregarInvestimentos(uid) {
                         </div>
                     </div>
                     <div class="plan-progress-bg">
-                        <div class="plan-progress-bar progress-timer" 
-                             data-inicio="${dataCriacao.getTime()}" 
-                             data-fim="${dataExpiracao ? dataExpiracao.getTime() : ''}" 
-                             style="width:${progresso}%">
-                        </div>
+                        <div class="plan-progress-bar progress-timer" style="width:${progresso}%"></div>
                     </div>
                 </div>`;
         });
@@ -548,20 +506,44 @@ async function carregarInvestimentos(uid) {
         else if (totalInvestido >= 500) { vipTag.className = "vip-badge vip-ouro"; vipNome.innerText = "VIP Ouro"; }
         else { vipTag.className = "vip-badge vip-bronze"; vipNome.innerText = "VIP Bronze"; }
 
-    } catch (e) { console.error("Erro investimentos:", e); }
+    } catch (e) { console.error(e); }
 }
 
+// --- MURAL DE AVISO ---
+async function carregarAviso() {
+    try {
+        const docRef = doc(db, "configuracoes", "aviso_global");
+        const snap = await getDoc(docRef);
+        if (snap.exists() && snap.data().texto.trim() !== "") {
+            document.getElementById('texto-aviso').innerText = snap.data().texto;
+            document.getElementById('container-aviso').style.display = 'block';
+        }
+    } catch (e) { console.error(e); }
+}
+
+// --- NOTIFICAÇÕES (SOCIAL PROOF) ---
+const nomes_pop = ["Marcos S.", "Julia R.", "Phelipe A.", "Ana Paula", "Bruno K.", "Carlos G.", "Diego M."];
+const tipos_pop = ["acabou de sacar", "recebeu lucro de", "ativou um novo plano"];
+function showPop() {
+    const pop = document.getElementById('social-pop');
+    const content = document.getElementById('social-content');
+    if(!pop || !content) return;
+    const nome = nomes_pop[Math.floor(Math.random()*nomes_pop.length)];
+    const tipo = tipos_pop[Math.floor(Math.random()*tipos_pop.length)];
+    const valor = (Math.random() * (450 - 30) + 30).toFixed(2);
+    content.innerHTML = `<b>${nome}</b> ${tipo} <span style="color:var(--green); font-weight:700">R$ ${valor}</span>`;
+    pop.classList.add('show');
+    setTimeout(() => pop.classList.remove('show'), 4000);
+}
+setInterval(showPop, 12000);
+
+// --- PROCESSAMENTO PRINCIPAL ---
 async function processarLogicaNegocio(uid, userData) {
     if (!sessionStorage.getItem('notificacaoBoasVindas')) {
-        await Swal.fire({
+        Swal.fire({
             title: `<span style="color: #0077ff;">Nexus</span> Intelligence`,
             html: `<p style="color: #cbd5e1; font-size: 0.9rem;">Bem-vindo de volta, <b>${userData.nome}</b>!<br>Seus rendimentos são processados a cada 24h.</p>`,
-            background: '#0a0f1a',
-            color: '#fff',
-            confirmButtonText: 'ACESSAR PAINEL',
-            confirmButtonColor: '#0077ff',
-            customClass: { popup: 'border: 1px solid rgba(255,255,255,0.08);' },
-            borderRadius: '24px'
+            background: '#0a0f1a', color: '#fff', confirmButtonText: 'ACESSAR PAINEL', confirmButtonColor: '#0077ff', borderRadius: '24px'
         });
         sessionStorage.setItem('notificacaoBoasVindas', 'true');
     }
@@ -599,17 +581,11 @@ async function processarLogicaNegocio(uid, userData) {
             Swal.fire({ 
                 title: 'Lucros Creditados!', 
                 text: `R$ ${ganhosParaCreditar.toFixed(2)} adicionados ao seu saldo.`, 
-                icon: 'success',
-                background: '#0a0f1a',
-                color: '#fff',
-                confirmButtonColor: '#0077ff'
+                icon: 'success', background: '#0a0f1a', color: '#fff', confirmButtonColor: '#0077ff'
             });
         }
-        
         if (updates.length > 0) await Promise.all(updates);
-        iniciarAnimacaoProgresso();
-
-    } catch (e) { console.error("Erro lucro:", e); }
+    } catch (e) { console.error(e); }
 }
     </script>
 </body>
