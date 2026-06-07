@@ -23,6 +23,7 @@
             --bronze: #ff9800;
             --silver: #e0e0e0;
             --gold: #ffd700;
+            --fire: #ff5722;
         }
 
         * { 
@@ -119,7 +120,7 @@
 
         /* BANNER EXCLUSIVO DA ROLETA FIXADA */
         .roulette-banner {
-            margin: 5px 20px 20px 20px;
+            margin: 5px 20px 10px 20px;
             background: linear-gradient(135deg, rgba(0, 82, 255, 0.15) 0%, rgba(0, 210, 255, 0.05) 100%);
             border: 1px solid rgba(0, 210, 255, 0.25);
             border-radius: 20px;
@@ -161,7 +162,47 @@
             box-shadow: 0 4px 12px rgba(0, 230, 118, 0.3);
             animation: pulseAlert 1.5s infinite alternate;
         }
-        @keyframes pulseAlert { 0% { transform: scale(1); } 100% { transform: scale(1.05); } }
+
+        /* --- NOVO: BANNER CHECK-IN DIÁRIO (FOGUINHO) --- */
+        .checkin-banner {
+            margin: 0 20px 20px 20px;
+            background: linear-gradient(135deg, rgba(255, 152, 0, 0.1) 0%, rgba(255, 87, 34, 0.03) 100%);
+            border: 1px solid rgba(255, 152, 0, 0.25);
+            border-radius: 20px;
+            padding: 18px 20px;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+        .checkin-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .checkin-title { font-weight: 800; font-size: 0.95rem; display: flex; align-items: center; gap: 8px; color: #fff; }
+        .checkin-title i { color: var(--bronze); font-size: 1.3rem; animation: pulseFlame 1.5s infinite alternate; }
+        @keyframes pulseFlame { 0% { transform: scale(1); filter: drop-shadow(0 0 5px rgba(255,152,0,0.4)); } 100% { transform: scale(1.15); filter: drop-shadow(0 0 15px rgba(255,87,34,0.8)); } }
+        
+        .checkin-days { display: flex; justify-content: space-between; gap: 6px; }
+        .day-box { 
+            background: rgba(255,255,255,0.03); border-radius: 12px; flex: 1; height: 50px; 
+            display: flex; flex-direction: column; align-items: center; justify-content: center; 
+            font-size: 0.65rem; color: rgba(255,255,255,0.4); border: 1px solid rgba(255,255,255,0.05);
+            transition: 0.3s;
+        }
+        .day-box i { font-size: 1rem; margin-bottom: 4px; opacity: 0.3; }
+        .day-box.active { background: rgba(255, 152, 0, 0.15); border-color: var(--bronze); color: #fff; }
+        .day-box.active i { opacity: 1; color: var(--bronze); text-shadow: 0 0 10px var(--bronze); }
+        .day-box.pending { background: rgba(255, 255, 255, 0.08); border-color: rgba(255, 255, 255, 0.3); color: #fff; }
+        .day-box.pending i { opacity: 0.7; color: #fff; }
+
+        .btn-checkin { 
+            width: 100%; margin-top: 15px; 
+            background: linear-gradient(135deg, #ff9800, #ff5722); 
+            color: white; border: none; padding: 14px; border-radius: 14px; 
+            font-weight: 800; font-size: 0.95rem; cursor: pointer; text-transform: uppercase; letter-spacing: 1px;
+            box-shadow: 0 5px 15px rgba(255, 87, 34, 0.3); transition: 0.2s;
+        }
+        .btn-checkin:active:not(:disabled) { transform: scale(0.96); }
+        .btn-checkin:disabled { 
+            background: rgba(255,255,255,0.05); color: var(--text-muted); 
+            box-shadow: none; border: 1px solid var(--card-border); cursor: not-allowed; 
+        }
 
         /* Listas de Investimentos */
         .plans-stack { padding: 12px 20px; display: flex; flex-direction: column; gap: 12px; }
@@ -233,6 +274,7 @@
 
         .nav-item.active { color: #fff; }
         .nav-item.active i { color: var(--cyan-neon); filter: drop-shadow(0 0 6px rgba(0, 210, 255, 0.5)); }
+        @keyframes pulseAlert { 0% { transform: scale(1); } 100% { transform: scale(1.05); } }
     </style>
 </head>
 <body>
@@ -294,6 +336,20 @@
         <div id="roleta-badge" class="roulette-badge">0 Giros</div>
     </a>
 
+    <div class="checkin-banner animate__animated animate__zoomIn" style="animation-delay: 0.2s;">
+        <div class="checkin-header">
+            <div class="checkin-title"><i class="fas fa-fire"></i> Check-in Diário</div>
+            <div id="badge-streak" class="vip-badge" style="background: rgba(255, 152, 0, 0.15); color: #ff9800; border: 1px solid rgba(255,152,0,0.3); box-shadow: none;">0 Dias</div>
+        </div>
+        
+        <div class="checkin-days" id="checkin-days-container">
+            </div>
+        
+        <button id="btn-checkin" class="btn-checkin" disabled>
+            <i class="fas fa-spinner fa-spin"></i> Sincronizando...
+        </button>
+    </div>
+
     <h3 style="padding: 0 25px 5px 25px; font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px;">Meus Contratos Ativos</h3>
     <div id="lista-investimentos" class="plans-stack"></div>
 
@@ -305,257 +361,362 @@
     </nav>
 
     <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-import { getFirestore, doc, getDoc, collection, query, where, getDocs, updateDoc, addDoc, Timestamp, increment, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc, collection, query, where, getDocs, updateDoc, addDoc, Timestamp, increment, onSnapshot } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-const firebaseConfig = {
-    apiKey: "AIzaSyDKDFw7khZzM9hIX7xbbrbFQeESiCLnmOw",
-    authDomain: "monety-site-9175f.firebaseapp.com",
-    projectId: "monety-site-9175f",
-    storageBucket: "monety-site-9175f.firebasestorage.app",
-    messagingSenderId: "840821848803",
-    appId: "1:840821848803:web:b99a5528e4bb925518a3d6"
-};
+        const firebaseConfig = {
+            apiKey: "AIzaSyDKDFw7khZzM9hIX7xbbrbFQeESiCLnmOw",
+            authDomain: "monety-site-9175f.firebaseapp.com",
+            projectId: "monety-site-9175f",
+            storageBucket: "monety-site-9175f.firebasestorage.app",
+            messagingSenderId: "840821848803",
+            appId: "1:840821848803:web:b99a5528e4bb925518a3d6"
+        };
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
 
-// --- UTILITÁRIOS ---
-let saldoVisivel = localStorage.getItem('saldoVisivel') !== 'false';
+        // --- UTILITÁRIOS ---
+        let saldoVisivel = localStorage.getItem('saldoVisivel') !== 'false';
 
-function formatarMoeda(valor) {
-    if (!saldoVisivel) return "R$ ******";
-    return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(valor || 0);
-}
-
-// --- SISTEMA DE NOTIFICAÇÕES (SOCIAL PROOF) ---
-const nomes_pop = ["Marcos S.", "Julia R.", "Phelipe A.", "Ana Paula", "Bruno K.", "Carlos G.", "Diego M."];
-const tipos_pop = ["acabou de sacar", "recebeu lucro de", "ativou um novo plano"];
-function showPop() {
-    const pop = document.getElementById('social-pop');
-    const content = document.getElementById('social-content');
-    if(!pop || !content) return;
-    const nome = nomes_pop[Math.floor(Math.random()*nomes_pop.length)];
-    const tipo = tipos_pop[Math.floor(Math.random()*tipos_pop.length)];
-    const valor = (Math.random() * (450 - 30) + 30).toFixed(2);
-    content.innerHTML = `<b>${nome}</b> ${tipo} <span style="color:var(--green-success); font-weight:700">R$ ${valor}</span>`;
-    pop.classList.add('show');
-    setTimeout(() => pop.classList.remove('show'), 4000);
-}
-setInterval(showPop, 12000);
-
-// --- MURAL DE AVISO ---
-async function carregarAviso() {
-    try {
-        const docRef = doc(db, "configuracoes", "aviso_global");
-        const snap = await getDoc(docRef);
-        if (snap.exists() && snap.data().texto.trim() !== "") {
-            document.getElementById('texto-aviso').innerText = snap.data().texto;
-            document.getElementById('container-aviso').style.display = 'block';
+        function formatarMoeda(valor) {
+            if (!saldoVisivel) return "R$ ******";
+            return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(valor || 0);
         }
-    } catch (e) { console.error("Erro aviso:", e); }
-}
 
-// --- ANIMAÇÃO DE PROGRESSO ---
-function iniciarAnimacaoProgresso() {
-    const interval = setInterval(() => {
-        const agora = new Date().getTime();
-        const bars = document.querySelectorAll('.progress-timer');
-        if (bars.length === 0) return;
-        
-        bars.forEach(bar => {
-            const inicio = parseInt(bar.getAttribute('data-inicio'));
-            const fim = bar.getAttribute('data-fim');
-            if (fim) {
-                const total = parseInt(fim) - inicio;
-                const decorrido = agora - inicio;
-                let percentagem = (decorrido / total) * 100;
-                bar.style.width = Math.min(100, Math.max(0, percentagem)).toFixed(4) + '%';
+        // --- SISTEMA DE DATAS (CHECK-IN) ---
+        function getHojeString() {
+            const d = new Date();
+            return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+        }
+        function getOntemString() {
+            const d = new Date();
+            d.setDate(d.getDate() - 1);
+            return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+        }
+
+        // --- SISTEMA DE NOTIFICAÇÕES (SOCIAL PROOF) ---
+        const nomes_pop = ["Marcos S.", "Julia R.", "Phelipe A.", "Ana Paula", "Bruno K.", "Carlos G.", "Diego M."];
+        const tipos_pop = ["acabou de sacar", "recebeu lucro de", "ativou um novo plano"];
+        function showPop() {
+            const pop = document.getElementById('social-pop');
+            const content = document.getElementById('social-content');
+            if(!pop || !content) return;
+            const nome = nomes_pop[Math.floor(Math.random()*nomes_pop.length)];
+            const tipo = tipos_pop[Math.floor(Math.random()*tipos_pop.length)];
+            const valor = (Math.random() * (450 - 30) + 30).toFixed(2);
+            content.innerHTML = `<b>${nome}</b> ${tipo} <span style="color:var(--green-success); font-weight:700">R$ ${valor}</span>`;
+            pop.classList.add('show');
+            setTimeout(() => pop.classList.remove('show'), 4000);
+        }
+        setInterval(showPop, 12000);
+
+        // --- MURAL DE AVISO ---
+        async function carregarAviso() {
+            try {
+                const docRef = doc(db, "configuracoes", "aviso_global");
+                const snap = await getDoc(docRef);
+                if (snap.exists() && snap.data().texto.trim() !== "") {
+                    document.getElementById('texto-aviso').innerText = snap.data().texto;
+                    document.getElementById('container-aviso').style.display = 'block';
+                }
+            } catch (e) { console.error("Erro aviso:", e); }
+        }
+
+        // --- ANIMAÇÃO DE PROGRESSO ---
+        function iniciarAnimacaoProgresso() {
+            const interval = setInterval(() => {
+                const agora = new Date().getTime();
+                const bars = document.querySelectorAll('.progress-timer');
+                if (bars.length === 0) return;
+                
+                bars.forEach(bar => {
+                    const inicio = parseInt(bar.getAttribute('data-inicio'));
+                    const fim = bar.getAttribute('data-fim');
+                    if (fim) {
+                        const total = parseInt(fim) - inicio;
+                        const decorrido = agora - inicio;
+                        let percentagem = (decorrido / total) * 100;
+                        bar.style.width = Math.min(100, Math.max(0, percentagem)).toFixed(4) + '%';
+                    }
+                });
+            }, 1000);
+        }
+
+        // --- ESCUTA EM TEMPO REAL ---
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                onSnapshot(doc(db, "usuarios", user.uid), (docSnap) => {
+                    if (docSnap.exists()) {
+                        const userData = docSnap.data();
+                        if (userData.status === "bloqueado") {
+                            signOut(auth).then(() => window.location.href = "login.html?error=blocked");
+                            return;
+                        }
+                        
+                        document.getElementById('home-nome').innerText = `Olá, ${userData.nome || "Investidor"}`;
+                        
+                        // Roleta Badge Atualização
+                        const girosAtuais = userData.giros || 0;
+                        const badgeRoleta = document.getElementById('roleta-badge');
+                        if (girosAtuais > 0) {
+                            badgeRoleta.innerText = `${girosAtuais} ${girosAtuais === 1 ? 'Giro Grátis' : 'Giros Grátis'}`;
+                            badgeRoleta.className = "roulette-badge has-spins";
+                        } else {
+                            badgeRoleta.innerText = "0 Giros";
+                            badgeRoleta.className = "roulette-badge";
+                        }
+
+                        // Atualiza Interface de Check-in Diário
+                        atualizarInterfaceCheckin(userData);
+
+                        // Cálculo Financeiro Integrado
+                        const saldoPrincipal = Number(userData.saldo) || 0;
+                        const saldoLucro = Number(userData.saldoLucro) || 0;
+                        const totalGanhos = Number(userData.totalGanhos) || 0;
+                        const saldoTotal = saldoPrincipal + saldoLucro;
+
+                        const atualizarElementosSaldo = () => {
+                            document.getElementById('home-saldo').innerText = formatarMoeda(saldoTotal);
+                            document.getElementById('stat-ganhos').innerText = formatarMoeda(totalGanhos);
+                            document.getElementById('stat-investir').innerText = formatarMoeda(saldoPrincipal);
+                            document.getElementById('stat-saque').innerText = formatarMoeda(saldoLucro);
+                            document.getElementById('toggle-balance').className = saldoVisivel ? "fas fa-eye" : "fas fa-eye-slash";
+                        };
+
+                        atualizarElementosSaldo();
+
+                        document.getElementById('toggle-balance').onclick = () => {
+                            saldoVisivel = !saldoVisivel;
+                            localStorage.setItem('saldoVisivel', saldoVisivel);
+                            atualizarElementosSaldo();
+                            carregarInvestimentos(user.uid);
+                        };
+
+                        carregarInvestimentos(user.uid);
+                        carregarAviso();
+                        
+                        if (!window.processamentoInicialRealizado) {
+                            window.processamentoInicialRealizado = true;
+                            processarLogicaNegocio(user.uid, userData);
+                        }
+                    }
+                });
+            } else {
+                window.location.href = "login.html";
             }
         });
-    }, 1000);
-}
 
-// --- ESCUTA EM TEMPO REAL ---
-onAuthStateChanged(auth, (user) => {
-    if (user) {
-        onSnapshot(doc(db, "usuarios", user.uid), (docSnap) => {
-            if (docSnap.exists()) {
-                const userData = docSnap.data();
-                if (userData.status === "bloqueado") {
-                    signOut(auth).then(() => window.location.href = "login.html?error=blocked");
-                    return;
-                }
-                
-                // Atualiza Nome do Usuário
-                document.getElementById('home-nome').innerText = `Olá, ${userData.nome || "Investidor"}`;
-                
-                // CORREÇÃO DA ROLETA: Monitora os giros reais da conta e atualiza dinamicamente o card
-                const girosAtuais = userData.giros || 0;
-                const badgeRoleta = document.getElementById('roleta-badge');
-                if (girosAtuais > 0) {
-                    badgeRoleta.innerText = `${girosAtuais} ${girosAtuais === 1 ? 'Giro Grátis' : 'Giros Grátis'}`;
-                    badgeRoleta.className = "roulette-badge has-spins";
-                } else {
-                    badgeRoleta.innerText = "0 Giros";
-                    badgeRoleta.className = "roulette-badge";
-                }
-
-                // Cálculo Financeiro Integrado
-                const saldoPrincipal = Number(userData.saldo) || 0;
-                const saldoLucro = Number(userData.saldoLucro) || 0;
-                const totalGanhos = Number(userData.totalGanhos) || 0;
-                const saldoTotal = saldoPrincipal + saldoLucro;
-
-                const atualizarElementosSaldo = () => {
-                    document.getElementById('home-saldo').innerText = formatarMoeda(saldoTotal);
-                    document.getElementById('stat-ganhos').innerText = formatarMoeda(totalGanhos);
-                    document.getElementById('stat-investir').innerText = formatarMoeda(saldoPrincipal);
-                    document.getElementById('stat-saque').innerText = formatarMoeda(saldoLucro);
-                    document.getElementById('toggle-balance').className = saldoVisivel ? "fas fa-eye" : "fas fa-eye-slash";
-                };
-
-                atualizarElementosSaldo();
-
-                // Toggle Olho Ocultar/Exibir Saldo
-                document.getElementById('toggle-balance').onclick = () => {
-                    saldoVisivel = !saldoVisivel;
-                    localStorage.setItem('saldoVisivel', saldoVisivel);
-                    atualizarElementosSaldo();
-                    carregarInvestimentos(user.uid);
-                };
-
-                carregarInvestimentos(user.uid);
-                carregarAviso();
-                
-                if (!window.processamentoInicialRealizado) {
-                    window.processamentoInicialRealizado = true;
-                    processarLogicaNegocio(user.uid, userData);
-                }
-            }
-        });
-    } else {
-        window.location.href = "login.html";
-    }
-});
-
-async function carregarInvestimentos(uid) {
-    try {
-        const q = query(collection(db, "investimentos"), where("userId", "==", uid), where("status", "==", "ativo"));
-        const snap = await getDocs(q);
-        let totalInvestido = 0;
-        let htmlContent = "";
-        const agora = new Date();
-
-        snap.forEach(docInv => {
-            const inv = docInv.data();
-            totalInvestido += Number(inv.valor || 0);
+        // --- LÓGICA DE CHECK-IN DIÁRIO (FOGUINHO) ---
+        function atualizarInterfaceCheckin(userData) {
+            const hoje = getHojeString();
+            const ontem = getOntemString();
             
-            const dataCriacao = inv.timestamp?.toDate() || agora;
-            const dataExpiracao = inv.dataExpiracao?.toDate();
-            let progresso = 0;
-            if (dataExpiracao) {
-                progresso = Math.min(100, Math.max(0, ((agora - dataCriacao) / (dataExpiracao - dataCriacao)) * 100));
+            // Corrige e lê streak atual
+            let streak = userData.streakCheckin || 0;
+            let ultimoCheckin = userData.ultimoCheckin || "";
+
+            // Regra principal de quebra de streak: Se não acessou hoje e não acessou ontem, perdeu a sequência.
+            if (ultimoCheckin !== hoje && ultimoCheckin !== ontem && streak > 0) {
+                streak = 0; 
             }
 
-            htmlContent += `
-                <div class="active-plan-item animate__animated animate__fadeInUp">
-                    <div style="display:flex; justify-content:space-between; align-items:center">
-                        <div>
-                            <h4 style="font-size:0.95rem; font-weight:700; color:#fff"><i class="fas fa-layer-group" style="color:var(--cyan-neon); margin-right:6px;"></i> ${inv.plano}</h4>
-                            <small style="color:var(--green-success); font-weight:600"><i class="fas fa-arrow-up"></i> + ${formatarMoeda(inv.rendimentoDiario)} / dia</small>
-                        </div>
-                        <div style="text-align:right">
-                            <strong style="font-size:1rem; color:#fff">${formatarMoeda(inv.valor)}</strong>
-                            <br><small style="color:var(--text-muted); font-size:0.6rem; text-transform:uppercase">Alocado</small>
-                        </div>
-                    </div>
-                    <div class="plan-progress-bg">
-                        <div class="plan-progress-bar progress-timer" 
-                             data-inicio="${dataCriacao.getTime()}" 
-                             data-fim="${dataExpiracao ? dataExpiracao.getTime() : ''}" 
-                             style="width:${progresso}%">
-                        </div>
-                    </div>
+            const isFezHoje = (ultimoCheckin === hoje);
+            const proximoStreak = isFezHoje ? streak : streak + 1;
+            const proximaRecompensa = proximoStreak * 0.50; // 50 centavos por dia multiplicado pela sequência
+
+            document.getElementById('badge-streak').innerHTML = `<i class="fas fa-fire"></i> ${streak} Dias`;
+            
+            // Monta as 7 caixinhas de dias visualmente
+            const containerDias = document.getElementById('checkin-days-container');
+            let htmlDias = '';
+            
+            // Calcula em que ciclo de 7 dias o usuário está para mostrar a barra corretamente
+            const diaVisualAtual = (streak % 7 === 0 && streak > 0 && isFezHoje) ? 7 : streak % 7; 
+
+            for (let i = 1; i <= 7; i++) {
+                let statusClass = '';
+                
+                if (i <= diaVisualAtual) {
+                    statusClass = 'active'; // Dias já pegos no ciclo
+                } else if (!isFezHoje && i === diaVisualAtual + 1) {
+                    statusClass = 'pending'; // O dia de HOJE pronto pra pegar
+                }
+
+                htmlDias += `
+                <div class="day-box ${statusClass}">
+                    <i class="fas fa-fire"></i>
+                    <span>${i}</span>
                 </div>`;
-        });
+            }
+            containerDias.innerHTML = htmlDias;
 
-        document.getElementById('lista-investimentos').innerHTML = htmlContent || '<p style="text-align:center; color:var(--text-muted); font-size:0.82rem; margin-top:20px;">Nenhum contrato em andamento.</p>';
-        document.getElementById('stat-investido').innerText = formatarMoeda(totalInvestido);
-        
-        // Atualiza Badge VIP de Acordo com o Volume
-        const vipTag = document.getElementById('vip-tag');
-        const vipNome = document.getElementById('vip-nome');
-        if (totalInvestido >= 2000) { vipTag.className = "vip-badge vip-diamante"; vipNome.innerText = "VIP Diamante"; }
-        else if (totalInvestido >= 500) { vipTag.className = "vip-badge vip-ouro"; vipNome.innerText = "VIP Ouro"; }
-        else { vipTag.className = "vip-badge vip-bronze"; vipNome.innerText = "VIP Bronze"; }
+            // Configura o Botão
+            const btn = document.getElementById('btn-checkin');
+            if (isFezHoje) {
+                btn.disabled = true;
+                btn.innerHTML = `<i class="fas fa-check-circle"></i> Coletado Hoje`;
+                btn.onclick = null;
+            } else {
+                btn.disabled = false;
+                btn.innerHTML = `🔥 Resgatar + R$ ${proximaRecompensa.toFixed(2)}`;
+                
+                // Evento de Clique para Resgate
+                btn.onclick = async () => {
+                    btn.disabled = true;
+                    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processando...';
+                    
+                    try {
+                        const uid = auth.currentUser.uid;
+                        
+                        await updateDoc(doc(db, "usuarios", uid), {
+                            streakCheckin: proximoStreak,
+                            ultimoCheckin: hoje,
+                            saldoLucro: increment(proximaRecompensa),
+                            totalGanhos: increment(proximaRecompensa)
+                        });
 
-    } catch (e) { console.error("Erro investimentos:", e); }
-}
+                        await addDoc(collection(db, "historico"), {
+                            userId: uid,
+                            valor: proximaRecompensa,
+                            tipo: `Check-in Diário (${proximoStreak}º dia)`,
+                            data: Timestamp.now()
+                        });
 
-async function processarLogicaNegocio(uid, userData) {
-    // Bem-vindo Customizado no Padrão Premium Dark Blue
-    if (!sessionStorage.getItem('notificacaoBoasVindas')) {
-        await Swal.fire({
-            title: `<span style="color: var(--cyan-neon);">Nexus</span> Premium`,
-            html: `<p style="color: #8a99ad; font-size: 0.9rem;">Olá <b>${userData.nome}</b>, bem-vindo à inteligência financeira.<br>Seus ciclos de rendimento rodam automaticamente.</p>`,
-            background: '#060b19',
-            color: '#fff',
-            confirmButtonText: 'ENTRAR NO PAINEL',
-            confirmButtonColor: '#0052ff',
-            borderRadius: '24px'
-        });
-        sessionStorage.setItem('notificacaoBoasVindas', 'true');
-    }
+                        Swal.fire({
+                            title: 'Recompensa Diária!',
+                            html: `Você resgatou <b style="color:var(--green-success)">R$ ${proximaRecompensa.toFixed(2)}</b> pelo seu <b>${proximoStreak}º</b> dia consecutivo!`,
+                            icon: 'success',
+                            background: '#060b19',
+                            color: '#fff',
+                            confirmButtonColor: '#ff5722'
+                        });
 
-    // Processamento de lucros diários (retroativo de segurança 24h)
-    try {
-        const q = query(collection(db, "investimentos"), where("userId", "==", uid), where("status", "==", "ativo"));
-        const snap = await getDocs(q);
-        const agora = new Date();
-        const vinteQuatroHoras = 24 * 60 * 60 * 1000;
-        let ganhosParaCreditar = 0;
-        const updates = [];
-
-        for (const docInv of snap.docs) {
-            const inv = docInv.data();
-            const dataCriacao = inv.timestamp.toDate();
-            const dataReferencia = inv.ultimoPagamento ? inv.ultimoPagamento.toDate() : dataCriacao;
-            const diff = agora.getTime() - dataReferencia.getTime();
-
-            if (diff >= vinteQuatroHoras) {
-                const ciclos = Math.floor(diff / vinteQuatroHoras);
-                ganhosParaCreditar += (Number(inv.rendimentoDiario) * ciclos);
-                const novoHorarioFixo = Timestamp.fromMillis(dataReferencia.getTime() + (ciclos * vinteQuatroHoras));
-                updates.push(updateDoc(doc(db, "investimentos", docInv.id), { ultimoPagamento: novoHorarioFixo }));
+                    } catch(err) {
+                        console.error(err);
+                        Swal.fire('Erro', 'Falha ao processar check-in.', 'error');
+                        btn.disabled = false;
+                        btn.innerHTML = `🔥 Resgatar + R$ ${proximaRecompensa.toFixed(2)}`;
+                    }
+                };
             }
         }
 
-        if (ganhosParaCreditar > 0) {
-            await updateDoc(doc(db, "usuarios", uid), {
-                saldoLucro: increment(ganhosParaCreditar),
-                totalGanhos: increment(ganhosParaCreditar)
-            });
-            await addDoc(collection(db, "historico"), {
-                userId: uid, valor: ganhosParaCreditar, tipo: 'Rendimento', data: Timestamp.now()
-            });
-            Swal.fire({ 
-                title: 'Rendimentos Creditados!', 
-                text: `R$ ${ganhosParaCreditar.toFixed(2)} sincronizados ao seu extrato.`, 
-                icon: 'success',
-                background: '#060b19',
-                color: '#fff',
-                confirmButtonColor: '#0052ff'
-            });
-        }
-        
-        if (updates.length > 0) await Promise.all(updates);
-        iniciarAnimacaoProgresso();
+        async function carregarInvestimentos(uid) {
+            try {
+                const q = query(collection(db, "investimentos"), where("userId", "==", uid), where("status", "==", "ativo"));
+                const snap = await getDocs(q);
+                let totalInvestido = 0;
+                let htmlContent = "";
+                const agora = new Date();
 
-    } catch (e) { console.error("Erro processamento de lucro:", e); }
-}
+                snap.forEach(docInv => {
+                    const inv = docInv.data();
+                    totalInvestido += Number(inv.valor || 0);
+                    
+                    const dataCriacao = inv.timestamp?.toDate() || agora;
+                    const dataExpiracao = inv.dataExpiracao?.toDate();
+                    let progresso = 0;
+                    if (dataExpiracao) {
+                        progresso = Math.min(100, Math.max(0, ((agora - dataCriacao) / (dataExpiracao - dataCriacao)) * 100));
+                    }
+
+                    htmlContent += `
+                        <div class="active-plan-item animate__animated animate__fadeInUp">
+                            <div style="display:flex; justify-content:space-between; align-items:center">
+                                <div>
+                                    <h4 style="font-size:0.95rem; font-weight:700; color:#fff"><i class="fas fa-layer-group" style="color:var(--cyan-neon); margin-right:6px;"></i> ${inv.plano}</h4>
+                                    <small style="color:var(--green-success); font-weight:600"><i class="fas fa-arrow-up"></i> + ${formatarMoeda(inv.rendimentoDiario)} / dia</small>
+                                </div>
+                                <div style="text-align:right">
+                                    <strong style="font-size:1rem; color:#fff">${formatarMoeda(inv.valor)}</strong>
+                                    <br><small style="color:var(--text-muted); font-size:0.6rem; text-transform:uppercase">Alocado</small>
+                                </div>
+                            </div>
+                            <div class="plan-progress-bg">
+                                <div class="plan-progress-bar progress-timer" 
+                                     data-inicio="${dataCriacao.getTime()}" 
+                                     data-fim="${dataExpiracao ? dataExpiracao.getTime() : ''}" 
+                                     style="width:${progresso}%">
+                                </div>
+                            </div>
+                        </div>`;
+                });
+
+                document.getElementById('lista-investimentos').innerHTML = htmlContent || '<p style="text-align:center; color:var(--text-muted); font-size:0.82rem; margin-top:20px;">Nenhum contrato em andamento.</p>';
+                document.getElementById('stat-investido').innerText = formatarMoeda(totalInvestido);
+                
+                // Atualiza Badge VIP de Acordo com o Volume
+                const vipTag = document.getElementById('vip-tag');
+                const vipNome = document.getElementById('vip-nome');
+                if (totalInvestido >= 2000) { vipTag.className = "vip-badge vip-diamante"; vipNome.innerText = "VIP Diamante"; }
+                else if (totalInvestido >= 500) { vipTag.className = "vip-badge vip-ouro"; vipNome.innerText = "VIP Ouro"; }
+                else { vipTag.className = "vip-badge vip-bronze"; vipNome.innerText = "VIP Bronze"; }
+
+            } catch (e) { console.error("Erro investimentos:", e); }
+        }
+
+        async function processarLogicaNegocio(uid, userData) {
+            if (!sessionStorage.getItem('notificacaoBoasVindas')) {
+                await Swal.fire({
+                    title: `<span style="color: var(--cyan-neon);">Nexus</span> Premium`,
+                    html: `<p style="color: #8a99ad; font-size: 0.9rem;">Olá <b>${userData.nome}</b>, bem-vindo à inteligência financeira.<br>Seus ciclos de rendimento rodam automaticamente.</p>`,
+                    background: '#060b19',
+                    color: '#fff',
+                    confirmButtonText: 'ENTRAR NO PAINEL',
+                    confirmButtonColor: '#0052ff',
+                    borderRadius: '24px'
+                });
+                sessionStorage.setItem('notificacaoBoasVindas', 'true');
+            }
+
+            try {
+                const q = query(collection(db, "investimentos"), where("userId", "==", uid), where("status", "==", "ativo"));
+                const snap = await getDocs(q);
+                const agora = new Date();
+                const vinteQuatroHoras = 24 * 60 * 60 * 1000;
+                let ganhosParaCreditar = 0;
+                const updates = [];
+
+                for (const docInv of snap.docs) {
+                    const inv = docInv.data();
+                    const dataCriacao = inv.timestamp.toDate();
+                    const dataReferencia = inv.ultimoPagamento ? inv.ultimoPagamento.toDate() : dataCriacao;
+                    const diff = agora.getTime() - dataReferencia.getTime();
+
+                    if (diff >= vinteQuatroHoras) {
+                        const ciclos = Math.floor(diff / vinteQuatroHoras);
+                        ganhosParaCreditar += (Number(inv.rendimentoDiario) * ciclos);
+                        const novoHorarioFixo = Timestamp.fromMillis(dataReferencia.getTime() + (ciclos * vinteQuatroHoras));
+                        updates.push(updateDoc(doc(db, "investimentos", docInv.id), { ultimoPagamento: novoHorarioFixo }));
+                    }
+                }
+
+                if (ganhosParaCreditar > 0) {
+                    await updateDoc(doc(db, "usuarios", uid), {
+                        saldoLucro: increment(ganhosParaCreditar),
+                        totalGanhos: increment(ganhosParaCreditar)
+                    });
+                    await addDoc(collection(db, "historico"), {
+                        userId: uid, valor: ganhosParaCreditar, tipo: 'Rendimento', data: Timestamp.now()
+                    });
+                    Swal.fire({ 
+                        title: 'Rendimentos Creditados!', 
+                        text: `R$ ${ganhosParaCreditar.toFixed(2)} sincronizados ao seu extrato.`, 
+                        icon: 'success',
+                        background: '#060b19',
+                        color: '#fff',
+                        confirmButtonColor: '#0052ff'
+                    });
+                }
+                
+                if (updates.length > 0) await Promise.all(updates);
+                iniciarAnimacaoProgresso();
+
+            } catch (e) { console.error("Erro processamento de lucro:", e); }
+        }
     </script>
 </body>
 </html>
