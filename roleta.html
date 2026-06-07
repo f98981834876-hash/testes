@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roleta Premiada - Nexus</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(180deg, #060b19 0%, #020408 100%);
+            --card-glass: rgba(255, 255, 255, 0.03);
+            --card-border: rgba(255, 255, 255, 0.07);
+            --blue-primary: #0052ff;
+            --cyan-neon: #00d2ff;
+            --green-success: #00e676;
+            --text-muted: #8a99ad;
+            --gold: #ffd700;
+        }
+
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            font-family: 'Inter', sans-serif; 
+            outline: none !important; 
+            -webkit-tap-highlight-color: transparent; 
+        }
+
+        body { 
+            background: var(--bg-gradient); 
+            color: white; 
+            padding-bottom: 110px; 
+            min-height: 100vh; 
+            overflow-x: hidden; 
+        }
+
+        /* Top Bar */
+        .top-bar { 
+            padding: 25px 20px 15px 20px; 
+            display: flex; 
+            align-items: center; 
+            gap: 15px; 
+        }
+        .btn-back {
+            color: var(--text-muted);
+            font-size: 1.2rem;
+            text-decoration: none;
+            width: 40px; height: 40px;
+            background: var(--card-glass);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            transition: 0.2s;
+        }
+        .btn-back:active { transform: scale(0.9); }
+        .page-title { font-weight: 700; font-size: 1.1rem; color: #fff; }
+
+        /* Card Centralizado */
+        .spin-status-card {
+            margin: 10px 20px 20px 20px;
+            background: rgba(0, 82, 255, 0.05);
+            border: 1px solid rgba(0, 210, 255, 0.2);
+            border-radius: 20px;
+            padding: 18px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+        .spin-status-card h3 { font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
+        .spin-status-card h2 { font-size: 1.8rem; font-weight: 800; color: var(--cyan-neon); display: flex; justify-content: center; align-items: center; gap: 10px;}
+
+        /* A Roleta */
+        .roleta-wrapper {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            margin: 40px auto;
+        }
+
+        .pointer {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+            font-size: 2.5rem;
+            color: var(--gold);
+            filter: drop-shadow(0 4px 10px rgba(0,0,0,0.6));
+        }
+
+        .wheel {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 6px solid #0f172a;
+            box-shadow: 0 0 35px rgba(0, 82, 255, 0.3), inset 0 0 25px rgba(0,0,0,0.6);
+            transition: transform 5s cubic-bezier(0.2, 0.8, 0.2, 1);
+            position: relative;
+            /* 6 fatias de 60 graus */
+            background: conic-gradient(
+                #0052ff 0deg 60deg,
+                #060b19 60deg 120deg,
+                #00d2ff 120deg 180deg,
+                #060b19 180deg 240deg,
+                #00e676 240deg 300deg,
+                #060b19 300deg 360deg
+            );
+        }
+
+        .prize-text {
+            position: absolute;
+            top: 50%; left: 50%;
+            font-weight: 800;
+            font-size: 1.1rem;
+            color: #fff;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+            transform-origin: 0 0;
+            white-space: nowrap;
+        }
+
+        /* Posição matemática de cada texto no meio da fatia */
+        .pt-1 { transform: translate(-50%, -50%) rotate(30deg) translateY(-110px); }
+        .pt-2 { transform: translate(-50%, -50%) rotate(90deg) translateY(-110px); color: var(--text-muted); }
+        .pt-3 { transform: translate(-50%, -50%) rotate(150deg) translateY(-110px); }
+        .pt-4 { transform: translate(-50%, -50%) rotate(210deg) translateY(-110px); }
+        .pt-5 { transform: translate(-50%, -50%) rotate(270deg) translateY(-110px); color: #020408; text-shadow: none; }
+        .pt-6 { transform: translate(-50%, -50%) rotate(330deg) translateY(-110px); }
+
+        /* Botão de Giro */
+        .action-area { text-align: center; margin-top: 20px; }
+        .btn-spin {
+            background: linear-gradient(135deg, var(--blue-primary), var(--cyan-neon));
+            color: white;
+            font-weight: 800;
+            font-size: 1.1rem;
+            padding: 18px 50px;
+            border-radius: 50px;
+            border: none;
+            box-shadow: 0 10px 25px rgba(0, 210, 255, 0.3);
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .btn-spin:active:not(:disabled) { transform: scale(0.95); box-shadow: 0 5px 15px rgba(0, 210, 255, 0.2); }
+        .btn-spin:disabled { background: var(--card-glass); color: var(--text-muted); box-shadow: none; cursor: not-allowed; border: 1px solid var(--card-border); }
+
+        /* Nav Bottom Clone da Home */
+        .nav-bottom { 
+            position: fixed; bottom: 0; left: 0; width: 100%; 
+            background: rgba(2, 4, 8, 0.85); display: flex; 
+            justify-content: space-around; padding: 12px 0; 
+            border-top: 1px solid rgba(255,255,255,0.06); 
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            z-index: 10000; height: 76px; align-items: center;
+        }
+        .nav-item { color: #4b5563; text-align: center; text-decoration: none; flex: 1; display: flex; flex-direction: column; align-items: center; gap: 5px; padding: 6px 0; transition: 0.2s; }
+        .nav-item i { font-size: 1.25rem; }
+        .nav-item span { font-size: 0.68rem; font-weight: 500; }
+        .nav-item.active { color: #fff; }
+        .nav-item.active i { color: var(--cyan-neon); filter: drop-shadow(0 0 6px rgba(0, 210, 255, 0.5)); }
+    </style>
+</head>
+<body>
+
+    <div class="top-bar">
+        <a href="home.html" class="btn-back"><i class="fas fa-chevron-left"></i></a>
+        <div class="page-title">Roleta Premiada</div>
+    </div>
+
+    <div class="spin-status-card animate__animated animate__fadeInDown">
+        <h3>Giros Disponíveis</h3>
+        <h2><i class="fas fa-ticket-alt" style="font-size: 1.4rem;"></i> <span id="giros-count">-</span></h2>
+    </div>
+
+    <div class="roleta-wrapper animate__animated animate__zoomIn">
+        <div class="pointer"><i class="fas fa-caret-down"></i></div>
+        <div class="wheel" id="wheel">
+            <div class="prize-text pt-1">R$ 10</div> <div class="prize-text pt-2">Nada</div>  <div class="prize-text pt-3">R$ 50</div> <div class="prize-text pt-4">R$ 5</div>  <div class="prize-text pt-5">R$ 100</div><div class="prize-text pt-6">R$ 20</div> </div>
+    </div>
+
+    <div class="action-area animate__animated animate__fadeInUp">
+        <button id="btn-spin" class="btn-spin">Girar Roleta</button>
+    </div>
+
+    <nav class="nav-bottom">
+        <a href="home.html" class="nav-item active"><i class="fas fa-home"></i><span>Início</span></a>
+        <a href="planos.html" class="nav-item"><i class="fas fa-chart-pie"></i><span>Planos</span></a>
+        <a href="indicacao.html" class="nav-item"><i class="fas fa-share-alt"></i><span>Indicar</span></a>
+        <a href="perfil.html" class="nav-item"><i class="fas fa-user-alt"></i><span>Perfil</span></a>
+    </nav>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getFirestore, doc, onSnapshot, updateDoc, increment, addDoc, collection, Timestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDKDFw7khZzM9hIX7xbbrbFQeESiCLnmOw",
+            authDomain: "monety-site-9175f.firebaseapp.com",
+            projectId: "monety-site-9175f",
+            storageBucket: "monety-site-9175f.firebasestorage.app",
+            messagingSenderId: "840821848803",
+            appId: "1:840821848803:web:b99a5528e4bb925518a3d6"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        let userDocRef = null;
+        let girosAtuais = 0;
+        let isSpinning = false;
+        let currentRotation = 0;
+
+        // Configuração dos Prêmios (Sincronizado estritamente com o CSS)
+        const premios = [
+            { valor: 10,  angulo: 30 },
+            { valor: 0,   angulo: 90 },
+            { valor: 50,  angulo: 150 },
+            { valor: 5,   angulo: 210 },
+            { valor: 100, angulo: 270 },
+            { valor: 20,  angulo: 330 }
+        ];
+
+        // Lógica de Probabilidade Ponderada
+        function sortearPremio() {
+            const rand = Math.random() * 100;
+            if (rand < 40) return premios[1]; // 40% chance: R$ 0 (Nada)
+            if (rand < 70) return premios[3]; // 30% chance: R$ 5
+            if (rand < 85) return premios[0]; // 15% chance: R$ 10
+            if (rand < 95) return premios[5]; // 10% chance: R$ 20
+            if (rand < 99) return premios[2]; // 4% chance: R$ 50
+            return premios[4];                // 1% chance: R$ 100
+        }
+
+        const btnSpin = document.getElementById('btn-spin');
+        const girosDisplay = document.getElementById('giros-count');
+        const wheel = document.getElementById('wheel');
+
+        // Escuta o banco de dados em tempo real
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                userDocRef = doc(db, "usuarios", user.uid);
+                onSnapshot(userDocRef, (docSnap) => {
+                    if (docSnap.exists()) {
+                        const data = docSnap.data();
+                        girosAtuais = data.giros || 0;
+                        girosDisplay.innerText = girosAtuais;
+
+                        if (girosAtuais <= 0 && !isSpinning) {
+                            btnSpin.disabled = true;
+                            btnSpin.innerHTML = "Sem Giros";
+                        } else if (!isSpinning) {
+                            btnSpin.disabled = false;
+                            btnSpin.innerHTML = "Girar Roleta";
+                        }
+                    }
+                });
+            } else {
+                window.location.href = "login.html";
+            }
+        });
+
+        // Ação de Girar
+        btnSpin.addEventListener('click', async () => {
+            if (girosAtuais <= 0 || isSpinning) return;
+            
+            isSpinning = true;
+            btnSpin.disabled = true;
+            btnSpin.innerHTML = '<i class="fas fa-sync fa-spin"></i> Processando...';
+
+            try {
+                // Deduz 1 giro no Firebase IMEDIATAMENTE antes da animação começar
+                await updateDoc(userDocRef, { giros: increment(-1) });
+
+                const premioSorteado = sortearPremio();
+
+                // Matemática do giro para parar exatamente no centro da fatia sorteada
+                const currentMod = currentRotation % 360;
+                const targetRotation = 360 - premioSorteado.angulo; // O ângulo necessário no topo
+                let degreesToSpin = targetRotation - currentMod;
+                
+                if (degreesToSpin <= 0) degreesToSpin += 360; // Garante que rode para frente
+                degreesToSpin += 360 * 5; // Adiciona 5 voltas completas para criar emoção
+
+                currentRotation += degreesToSpin;
+                wheel.style.transform = `rotate(${currentRotation}deg)`;
+
+                // Espera a animação CSS (5s) terminar para depositar na conta e notificar
+                setTimeout(async () => {
+                    isSpinning = false;
+
+                    if (premioSorteado.valor > 0) {
+                        // Credita os ganhos
+                        await updateDoc(userDocRef, {
+                            saldoLucro: increment(premioSorteado.valor),
+                            totalGanhos: increment(premioSorteado.valor)
+                        });
+                        
+                        // Registra no Histórico de Transações
+                        await addDoc(collection(db, "historico"), {
+                            userId: auth.currentUser.uid,
+                            valor: premioSorteado.valor,
+                            tipo: 'Roleta Premiada',
+                            data: Timestamp.now()
+                        });
+
+                        Swal.fire({
+                            title: 'BINGO!',
+                            html: `Você tirou a sorte grande e ganhou <b>R$ ${premioSorteado.valor},00</b>!<br><small>O saldo foi adicionado ao seu lucro.</small>`,
+                            icon: 'success',
+                            background: '#060b19',
+                            color: '#fff',
+                            confirmButtonColor: '#0052ff',
+                            borderRadius: '24px'
+                        });
+                    } else {
+                        Swal.fire({
+                            title: 'Quase!',
+                            text: 'Não foi dessa vez. Continue convidando e ativando planos para ganhar mais giros!',
+                            icon: 'info',
+                            background: '#060b19',
+                            color: '#fff',
+                            confirmButtonColor: '#0052ff',
+                            borderRadius: '24px'
+                        });
+                    }
+
+                    if (girosAtuais > 0) {
+                        btnSpin.disabled = false;
+                        btnSpin.innerHTML = "Girar Novamente";
+                    } else {
+                        btnSpin.innerHTML = "Sem Giros";
+                    }
+
+                }, 5000);
+
+            } catch (error) {
+                console.error("Erro na roleta:", error);
+                isSpinning = false;
+                btnSpin.disabled = false;
+                btnSpin.innerHTML = "Tentar Novamente";
+                Swal.fire('Erro!', 'Falha ao sincronizar com servidor.', 'error');
+            }
+        });
+    </script>
+</body>
+</html>
